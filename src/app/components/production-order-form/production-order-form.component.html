@@ -1,0 +1,40 @@
+<div class="container">
+    <h2>{{ isEditMode ? 'Edit Production Order' : 'Create Production Order' }}</h2>
+    <form (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="productId">Product ID</label>
+            <input type="number" id="productId" [(ngModel)]="order.productId" name="productId" required>
+        </div>
+        <div class="form-group">
+            <label for="productName">Product Name</label>
+            <input type="text" id="productName" [(ngModel)]="order.productName" name="productName" required>
+        </div>
+        <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" [(ngModel)]="order.quantity" name="quantity" required>
+        </div>
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select id="status" [(ngModel)]="order.status" name="status" required>
+                <option value="EN_ATTENTE">En Attente</option>
+                <option value="EN_PRODUCTION">En Production</option>
+                <option value="TERMINE">Terminé</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="startDate">Start Date</label>
+            <input type="date" id="startDate" [(ngModel)]="order.startDate" name="startDate" required>
+        </div>
+        <div class="form-group">
+            <label for="endDate">End Date</label>
+            <input type="date" id="endDate" [(ngModel)]="order.endDate" name="endDate" required>
+        </div>
+        <div class="form-group">
+            <label for="isPriority">Priority</label>
+            <input type="checkbox" id="isPriority" [(ngModel)]="order.isPriority" name="isPriority">
+        </div>
+
+        <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+        <button type="button" class="cancel" (click)="onCancel()">Cancel</button>
+    </form>
+</div>

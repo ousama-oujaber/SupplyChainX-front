@@ -1,1 +1,109 @@
-/* You can add global styles to this file, and also import other style files */
+@use "tailwindcss/base";
+@use "tailwindcss/components";
+@use "tailwindcss/utilities";
+@import "primeng/resources/themes/aura-dark-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: #111827;
+    color: #ffffff;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* PrimeNG Dark Mode Overrides for Premium Feel */
+.p-card,
+.p-table,
+.p-component {
+    font-family: var(--font-family);
+}
+
+.p-card {
+    background: rgba(31, 41, 55, 0.7) !important;
+    /* gray-800 with opacity */
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: #ffffff !important;
+}
+
+.p-table {
+    background: transparent !important;
+}
+
+.p-datatable .p-datatable-header {
+    background: transparent !important;
+    border: none !important;
+}
+
+.p-datatable .p-datatable-thead>tr>th {
+    background: rgba(17, 24, 39, 0.8) !important;
+    /* gray-900 */
+    color: #9ca3af !important;
+    /* gray-400 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.p-datatable .p-datatable-tbody>tr {
+    background: transparent !important;
+    color: #e5e7eb !important;
+    /* gray-200 */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    transition: background-color 0.2s;
+}
+
+.p-datatable .p-datatable-tbody>tr:hover {
+    background: rgba(255, 255, 255, 0.03) !important;
+}
+
+.p-paginator {
+    background: transparent !important;
+    border: none !important;
+    color: #9ca3af !important;
+}
+
+.p-button.p-button-text {
+    color: #60a5fa !important;
+    /* blue-400 */
+}
+
+.p-button.p-button-text:hover {
+    background: rgba(96, 165, 250, 0.1) !important;
+}
+
+.p-tag {
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
