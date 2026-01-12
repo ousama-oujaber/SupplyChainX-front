@@ -1,0 +1,34 @@
+<div class="card">
+    <div class="header">
+        <h2>Users</h2>
+        <p-button label="Add User" icon="pi pi-plus" (click)="addUser()"></p-button>
+    </div>
+
+    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header">
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-user>
+            <tr>
+                <td>{{ user.idUser }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.firstName }} {{ user.lastName }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles?.join(', ') }}</td>
+                <td>
+                    <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-success mr-2"
+                        (click)="editUser(user.idUser!)"></p-button>
+                    <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger"
+                        (click)="deleteUser(user.idUser!)"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

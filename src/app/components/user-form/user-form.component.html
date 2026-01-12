@@ -1,0 +1,35 @@
+<div class="card form-container">
+    <h2>{{ isEditMode ? 'Edit User' : 'New User' }}</h2>
+
+    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" pInputText id="username" name="username" [(ngModel)]="user.username" required />
+        </div>
+
+        <div class="field">
+            <label for="email">Email</label>
+            <input type="email" pInputText id="email" name="email" [(ngModel)]="user.email" required email />
+        </div>
+
+        <div class="field">
+            <label for="firstName">First Name</label>
+            <input type="text" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName" required />
+        </div>
+
+        <div class="field">
+            <label for="lastName">Last Name</label>
+            <input type="text" pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName" required />
+        </div>
+
+        <div class="field" *ngIf="!isEditMode">
+            <label for="password">Password</label>
+            <input type="password" pInputText id="password" name="password" [(ngModel)]="user.password" required />
+        </div>
+
+        <div class="actions">
+            <p-button label="Save" type="submit" [disabled]="!userForm.valid"></p-button>
+            <p-button label="Cancel" styleClass="p-button-secondary" (click)="onCancel()"></p-button>
+        </div>
+    </form>
+</div>
