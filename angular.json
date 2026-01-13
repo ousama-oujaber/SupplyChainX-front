@@ -29,6 +29,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/primeng/resources/themes/aura-dark-blue/fonts",
+                "output": "/themes/aura-dark-blue/fonts"
               }
             ],
             "styles": [
@@ -70,7 +75,8 @@
               "buildTarget": "supplychainx-frontend:build:production"
             },
             "development": {
-              "buildTarget": "supplychainx-frontend:build:development"
+              "buildTarget": "supplychainx-frontend:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"

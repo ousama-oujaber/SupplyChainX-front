@@ -1,0 +1,35 @@
+<div class="rounded-2xl bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6">
+  <div class="flex justify-between items-center mb-4">
+    <h2 class="text-xl font-bold">Products</h2>
+    <p-button label="Add Product" icon="pi pi-plus" (onClick)="addProduct()" styleClass="p-button-success"></p-button>
+  </div>
+
+  <p-table [value]="products" [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]">
+    <ng-template pTemplate="header">
+      <tr>
+        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="productionTime">Production Time <p-sortIcon field="productionTime"></p-sortIcon></th>
+        <th pSortableColumn="cost">Cost <p-sortIcon field="cost"></p-sortIcon></th>
+        <th pSortableColumn="stock">Stock <p-sortIcon field="stock"></p-sortIcon></th>
+        <th pSortableColumn="activeOrdersCount">Active Orders <p-sortIcon field="activeOrdersCount"></p-sortIcon></th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.productionTime }}</td>
+        <td>{{ product.cost | currency }}</td>
+        <td>{{ product.stock }}</td>
+        <td>{{ product.activeOrdersCount }}</td>
+        <td>
+          <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="warning"
+            (onClick)="editProduct(product.idProduct)"></p-button>
+          <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+            (onClick)="deleteProduct(product.idProduct)"></p-button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

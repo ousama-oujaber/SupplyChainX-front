@@ -1,35 +1,59 @@
-<div class="min-h-screen flex flex-col font-sans text-white">
-  <!-- Navbar -->
-  <nav
-    class="glass sticky top-0 z-50 border-b border-white/10 px-6 py-4 flex items-center justify-between backdrop-blur-md bg-gray-900/60">
-    <div class="flex items-center gap-4">
-      <div
-        class="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
-        <i class="pi pi-box text-white text-sm"></i>
-      </div>
-      <span
-        class="text-xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-        SupplyChainX
-      </span>
-    </div>
-    <div class="flex items-center gap-6">
-      <a routerLink="/users" routerLinkActive="text-blue-400"
-        class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Users</a>
-      <a href="#" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Dashboard</a>
-      <a href="#" class="text-gray-300 hover:text-white transition-colors text-sm font-medium">Settings</a>
-      <div class="w-8 h-8 rounded-full bg-gray-800 border border-white/10 flex items-center justify-center">
-        <i class="pi pi-user text-gray-400 text-sm"></i>
+<div class="flex h-screen bg-white dark:bg-slate-900 overflow-hidden">
+  <!-- Sidebar -->
+  <aside
+    class="w-64 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 flex flex-col shadow-sm z-10">
+    <!-- Logo -->
+    <div class="h-16 flex items-center px-6 border-b border-slate-100 dark:border-slate-700">
+      <div class="flex items-center gap-2 text-primary-600">
+        <i class="pi pi-box text-2xl"></i>
+        <span class="font-bold text-xl tracking-tight text-slate-800 dark:text-white">SupplyChainX</span>
       </div>
     </div>
-  </nav>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto py-4 px-3 space-y-1">
+      <a *ngFor="let item of items" [routerLink]="item.routerLink"
+        routerLinkActive="bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors group">
+        <i [class]="item.icon"
+          class="text-lg group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors"></i>
+        <span class="font-medium">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <!-- User Profile (Mock) -->
+    <div class="p-4 border-t border-slate-100 dark:border-slate-700">
+      <div class="flex items-center gap-3">
+        <div
+          class="w-8 h-8 rounded-full bg-gradient-to-tr from-primary-500 to-indigo-500 flex items-center justify-center text-white font-bold text-xs">
+          AD
+        </div>
+        <div class="flex flex-col">
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-200">Admin User</span>
+          <span class="text-xs text-slate-500 dark:text-slate-400">admin@scx.com</span>
+        </div>
+      </div>
+    </div>
+  </aside>
 
   <!-- Main Content -->
-  <main class="flex-1 container mx-auto px-6 py-8 relative">
-    <!-- Glow Effects -->
-    <div class="absolute top-0 left-0 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl -z-10 pointer-events-none"></div>
-    <div class="absolute bottom-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl -z-10 pointer-events-none">
-    </div>
+  <main class="flex-1 overflow-auto relative">
+    <!-- Top Header (Optional, for search/notifications) -->
+    <header
+      class="h-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-b border-slate-200 dark:border-slate-700 sticky top-0 z-20 px-8 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-slate-800 dark:text-white">Dashboard</h2>
+      <div class="flex items-center gap-4">
+        <button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+          <i class="pi pi-bell text-xl"></i>
+        </button>
+        <button class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors">
+          <i class="pi pi-cog text-xl"></i>
+        </button>
+      </div>
+    </header>
 
-    <router-outlet></router-outlet>
+    <div class="p-8 max-w-7xl mx-auto">
+      <router-outlet></router-outlet>
+    </div>
   </main>
 </div>

@@ -1,0 +1,43 @@
+<div class="rounded-2xl bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold">Production Orders</h2>
+        <p-button label="Create Order" icon="pi pi-plus" (onClick)="addOrder()"
+            styleClass="p-button-success"></p-button>
+    </div>
+
+    <p-table [value]="orders" [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
+        [rowsPerPageOptions]="[5, 10, 20]">
+        <ng-template pTemplate="header">
+            <tr>
+                <th pSortableColumn="productName">Product <p-sortIcon field="productName"></p-sortIcon></th>
+                <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
+                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
+                <th pSortableColumn="startDate">Start Date <p-sortIcon field="startDate"></p-sortIcon></th>
+                <th pSortableColumn="endDate">End Date <p-sortIcon field="endDate"></p-sortIcon></th>
+                <th pSortableColumn="isPriority">Priority <p-sortIcon field="isPriority"></p-sortIcon></th>
+                <th>Actions</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-order>
+            <tr>
+                <td>{{ order.productName }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>
+                    <p-tag [value]="order.status" [severity]="getSeverity(order.status)"></p-tag>
+                </td>
+                <td>{{ order.startDate | date }}</td>
+                <td>{{ order.endDate | date }}</td>
+                <td>
+                    <i class="pi"
+                        [ngClass]="{'pi-check-circle text-green-500': order.isPriority, 'pi-times-circle text-gray-400': !order.isPriority}"></i>
+                </td>
+                <td>
+                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="warning"
+                        (onClick)="editOrder(order.idOrder)"></p-button>
+                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
+                        (onClick)="deleteOrder(order.idOrder)"></p-button>
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

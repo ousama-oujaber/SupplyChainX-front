@@ -1,0 +1,90 @@
+<div class="space-y-8">
+    <!-- Header -->
+    <div>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Overview</h1>
+        <p class="text-slate-500 dark:text-slate-400 mt-1">Welcome back, here's what's happening today.</p>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Total Products Card -->
+        <div
+            class="relative overflow-hidden rounded-2xl p-6 bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 group hover:shadow-md transition-all duration-300">
+            <div
+                class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-blue-50 dark:bg-blue-900/20 blur-2xl opacity-50 group-hover:opacity-100 transition-opacity">
+            </div>
+            <div class="relative flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total
+                        Products</p>
+                    <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2">{{ totalProducts }}</h3>
+                    <div class="mt-2 flex items-center text-sm text-green-600 dark:text-green-400">
+                        <i class="pi pi-arrow-up text-xs mr-1"></i>
+                        <span>12% from last month</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-blue-50 dark:bg-blue-900/30 rounded-xl text-blue-600 dark:text-blue-400">
+                    <i class="pi pi-box text-xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Active Orders Card -->
+        <div
+            class="relative overflow-hidden rounded-2xl p-6 bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 group hover:shadow-md transition-all duration-300">
+            <div
+                class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-amber-50 dark:bg-amber-900/20 blur-2xl opacity-50 group-hover:opacity-100 transition-opacity">
+            </div>
+            <div class="relative flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Active
+                        Orders</p>
+                    <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2">{{ activeOrders }}</h3>
+                    <div class="mt-2 flex items-center text-sm text-amber-600 dark:text-amber-400">
+                        <i class="pi pi-clock text-xs mr-1"></i>
+                        <span>5 pending approval</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-amber-50 dark:bg-amber-900/30 rounded-xl text-amber-600 dark:text-amber-400">
+                    <i class="pi pi-cog text-xl spin-slow"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total Orders Card -->
+        <div
+            class="relative overflow-hidden rounded-2xl p-6 bg-white dark:bg-slate-800 shadow-sm border border-slate-200 dark:border-slate-700 group hover:shadow-md transition-all duration-300">
+            <div
+                class="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 rounded-full bg-purple-50 dark:bg-purple-900/20 blur-2xl opacity-50 group-hover:opacity-100 transition-opacity">
+            </div>
+            <div class="relative flex justify-between items-start">
+                <div>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wider">Total
+                        Orders</p>
+                    <h3 class="text-3xl font-bold text-slate-800 dark:text-white mt-2">{{ totalOrders }}</h3>
+                    <div class="mt-2 flex items-center text-sm text-slate-500 dark:text-slate-400">
+                        <span>Lifetime volume</span>
+                    </div>
+                </div>
+                <div class="p-3 bg-purple-50 dark:bg-purple-900/30 rounded-xl text-purple-600 dark:text-purple-400">
+                    <i class="pi pi-chart-line text-xl"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders Section -->
+    <div
+        class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 dark:border-slate-700 flex justify-between items-center">
+            <div>
+                <h2 class="text-lg font-bold text-slate-800 dark:text-white">Recent Production Orders</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400">Manage and track your production status</p>
+            </div>
+            <button class="text-sm text-primary-600 font-medium hover:text-primary-700">View All</button>
+        </div>
+        <div class="p-0">
+            <app-production-order-list></app-production-order-list>
+        </div>
+    </div>
+</div>
