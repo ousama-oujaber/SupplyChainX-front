@@ -1,35 +1,65 @@
-<div class="card form-container">
-    <h2>{{ isEditMode ? 'Edit User' : 'New User' }}</h2>
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="glass-card p-8 rounded-2xl border border-white/10 animate-fade-in-up">
+        <h2 class="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            {{ isEditMode ? 'Edit User' : 'New User' }}
+        </h2>
 
-    <form (ngSubmit)="onSubmit()" #userForm="ngForm">
-        <div class="field">
-            <label for="username">Username</label>
-            <input type="text" pInputText id="username" name="username" [(ngModel)]="user.username" required />
-        </div>
+        <form (ngSubmit)="onSubmit()" #userForm="ngForm" class="space-y-6">
 
-        <div class="field">
-            <label for="email">Email</label>
-            <input type="email" pInputText id="email" name="email" [(ngModel)]="user.email" required email />
-        </div>
+            <!-- Grid for Names -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                <div class="flex flex-col gap-2">
+                    <p-floatLabel>
+                        <input type="text" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName"
+                            required
+                            class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                        <label for="firstName" class="text-gray-300">First Name</label>
+                    </p-floatLabel>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <p-floatLabel>
+                        <input type="text" pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName" required
+                            class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                        <label for="lastName" class="text-gray-300">Last Name</label>
+                    </p-floatLabel>
+                </div>
+            </div>
 
-        <div class="field">
-            <label for="firstName">First Name</label>
-            <input type="text" pInputText id="firstName" name="firstName" [(ngModel)]="user.firstName" required />
-        </div>
+            <!-- Email -->
+            <div class="flex flex-col gap-2 pt-2">
+                <p-floatLabel>
+                    <input type="email" pInputText id="email" name="email" [(ngModel)]="user.email" required email
+                        class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                    <label for="email" class="text-gray-300">Email</label>
+                </p-floatLabel>
+            </div>
 
-        <div class="field">
-            <label for="lastName">Last Name</label>
-            <input type="text" pInputText id="lastName" name="lastName" [(ngModel)]="user.lastName" required />
-        </div>
+            <!-- Role -->
+            <div class="flex flex-col gap-2 pt-2">
+                <p-floatLabel>
+                    <p-dropdown id="role" name="role" [options]="roles" [(ngModel)]="user.role" [showClear]="true"
+                        styleClass="w-full" [style]="{'width':'100%'}" appendTo="body" required
+                        inputId="role"></p-dropdown>
+                    <label for="role" class="text-gray-300">Role</label>
+                </p-floatLabel>
+            </div>
 
-        <div class="field" *ngIf="!isEditMode">
-            <label for="password">Password</label>
-            <input type="password" pInputText id="password" name="password" [(ngModel)]="user.password" required />
-        </div>
+            <!-- Password (Only for new users) -->
+            <div class="flex flex-col gap-2 pt-2" *ngIf="!isEditMode">
+                <p-floatLabel>
+                    <input type="password" pInputText id="password" name="password" [(ngModel)]="user.password" required
+                        class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                    <label for="password" class="text-gray-300">Password</label>
+                </p-floatLabel>
+            </div>
 
-        <div class="actions">
-            <p-button label="Save" type="submit" [disabled]="!userForm.valid"></p-button>
-            <p-button label="Cancel" styleClass="p-button-secondary" (click)="onCancel()"></p-button>
-        </div>
-    </form>
+            <!-- Actions -->
+            <div class="flex items-center gap-4 pt-4">
+                <p-button label="Save" type="submit" [disabled]="!userForm.valid" icon="pi pi-check"
+                    styleClass="p-button-primary"></p-button>
+                <p-button label="Cancel" type="button" (click)="onCancel()" icon="pi pi-times"
+                    styleClass="p-button-text text-gray-400 hover:text-white"></p-button>
+            </div>
+        </form>
+    </div>
 </div>

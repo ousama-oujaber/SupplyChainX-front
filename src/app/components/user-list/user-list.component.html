@@ -1,34 +1,51 @@
-<div class="card">
-    <div class="header">
-        <h2>Users</h2>
-        <p-button label="Add User" icon="pi pi-plus" (click)="addUser()"></p-button>
+<div class="glass-card p-6 rounded-2xl border border-white/10 animate-fade-in-up">
+    <!-- Toolbar -->
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+                User Management
+            </h2>
+            <p class="text-gray-400 text-sm mt-1">Manage system access and roles</p>
+        </div>
+        <p-button label="Add User" icon="pi pi-plus" (click)="addUser()"
+            styleClass="p-button-rounded p-button-outlined"></p-button>
     </div>
 
-    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }">
+    <!-- Table -->
+    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
         <ng-template pTemplate="header">
             <tr>
-                <th>ID</th>
-                <th>Username</th>
-                <th>Full Name</th>
+                <th class="w-[50px]">ID</th>
+                <th class="w-[200px]">Full Name</th>
                 <th>Email</th>
-                <th>Roles</th>
-                <th>Actions</th>
+                <th class="w-[150px]">Role</th>
+                <th class="w-[120px] text-center">Actions</th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-user>
-            <tr>
-                <td>{{ user.idUser }}</td>
-                <td>{{ user.username }}</td>
-                <td>{{ user.firstName }} {{ user.lastName }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles?.join(', ') }}</td>
+            <tr class="hover:bg-white/5 transition-colors">
+                <td class="text-gray-400">#{{ user.id }}</td>
+                <td class="font-medium text-white">{{ user.firstName }} {{ user.lastName }}</td>
+                <td class="text-gray-300">{{ user.email }}</td>
                 <td>
-                    <p-button icon="pi pi-pencil" styleClass="p-button-rounded p-button-success mr-2"
-                        (click)="editUser(user.idUser!)"></p-button>
-                    <p-button icon="pi pi-trash" styleClass="p-button-rounded p-button-danger"
-                        (click)="deleteUser(user.idUser!)"></p-button>
+                    <p-tag [value]="formatRole(user.role)" [severity]="getSeverity(user.role)" [rounded]="true"></p-tag>
+                </td>
+                <td class="text-center">
+                    <div class="flex items-center justify-center gap-2">
+                        <button (click)="editUser(user.id!)"
+                            class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:scale-110 transition-all flex items-center justify-center">
+                            <i class="pi pi-pencil text-sm"></i>
+                        </button>
+                        <button (click)="deleteUser(user.id!)"
+                            class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:scale-110 transition-all flex items-center justify-center">
+                            <i class="pi pi-trash text-sm"></i>
+                        </button>
+                    </div>
                 </td>
             </tr>
         </ng-template>
     </p-table>
 </div>
+
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-toast position="bottom-right"></p-toast>

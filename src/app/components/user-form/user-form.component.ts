@@ -4,13 +4,15 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { User } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 
 @Component({
     selector: 'app-user-form',
     standalone: true,
-    imports: [CommonModule, FormsModule, ButtonModule, InputTextModule],
+    imports: [CommonModule, FormsModule, ButtonModule, InputTextModule, DropdownModule, FloatLabelModule],
     templateUrl: './user-form.component.html',
     styles: [`
     :host { display: block; }
@@ -23,12 +25,24 @@ import { UserService } from '../../services/user.service';
 })
 export class UserFormComponent implements OnInit {
     user: User = {
-        username: '',
         email: '',
         firstName: '',
-        lastName: ''
+        lastName: '',
+        role: ''
     };
     isEditMode = false;
+    roles = [
+        { label: 'Admin', value: 'ADMIN' },
+        { label: 'Gestionnaire Approvisionnement', value: 'GESTIONNAIRE_APPROVISIONNEMENT' },
+        { label: 'Responsable Achats', value: 'RESPONSABLE_ACHATS' },
+        { label: 'Superviseur Logistique', value: 'SUPERVISEUR_LOGISTIQUE' },
+        { label: 'Chef de Production', value: 'CHEF_PRODUCTION' },
+        { label: 'Planificateur', value: 'PLANIFICATEUR' },
+        { label: 'Superviseur Production', value: 'SUPERVISEUR_PRODUCTION' },
+        { label: 'Gestionnaire Commercial', value: 'GESTIONNAIRE_COMMERCIAL' },
+        { label: 'Responsable Logistique', value: 'RESPONSABLE_LOGISTIQUE' },
+        { label: 'Superviseur Livraisons', value: 'SUPERVISEUR_LIVRAISONS' }
+    ];
 
     constructor(
         private userService: UserService,
@@ -48,8 +62,8 @@ export class UserFormComponent implements OnInit {
     }
 
     onSubmit(): void {
-        if (this.isEditMode && this.user.idUser) {
-            this.userService.updateUser(this.user.idUser, this.user).subscribe({
+        if (this.isEditMode && this.user.id) {
+            this.userService.updateUser(this.user.id, this.user).subscribe({
                 next: () => this.router.navigate(['/users']),
                 error: (e) => console.error(e)
             });
