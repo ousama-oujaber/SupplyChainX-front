@@ -49,4 +49,12 @@ export class BomListComponent implements OnInit {
             });
         }
     }
+
+    getAvailableCount(): number {
+        return this.boms.filter(b => b.materialAvailable).length;
+    }
+
+    getUnavailableCount(): number {
+        return this.boms.filter(b => !b.materialAvailable).length;
+    }
 }

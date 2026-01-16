@@ -1,43 +1,123 @@
-<div class="rounded-2xl bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold">Production Orders</h2>
-        <p-button label="Create Order" icon="pi pi-plus" (onClick)="addOrder()"
-            styleClass="p-button-success"></p-button>
+<div class="list-page">
+    <!-- Header -->
+    <div class="list-header">
+        <div class="list-header-left">
+            <div class="list-icon amber">
+                <i class="pi pi-cog"></i>
+            </div>
+            <div>
+                <h1 class="list-title">Production Orders</h1>
+                <p class="list-subtitle">Manage manufacturing and production scheduling</p>
+            </div>
+        </div>
+        <div class="list-actions">
+            <button class="btn-primary" (click)="addOrder()">
+                <i class="pi pi-plus"></i>
+                Create Order
+            </button>
+        </div>
     </div>
 
-    <p-table [value]="orders" [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
-        [rowsPerPageOptions]="[5, 10, 20]">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="productName">Product <p-sortIcon field="productName"></p-sortIcon></th>
-                <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
-                <th pSortableColumn="status">Status <p-sortIcon field="status"></p-sortIcon></th>
-                <th pSortableColumn="startDate">Start Date <p-sortIcon field="startDate"></p-sortIcon></th>
-                <th pSortableColumn="endDate">End Date <p-sortIcon field="endDate"></p-sortIcon></th>
-                <th pSortableColumn="isPriority">Priority <p-sortIcon field="isPriority"></p-sortIcon></th>
-                <th>Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-order>
-            <tr>
-                <td>{{ order.productName }}</td>
-                <td>{{ order.quantity }}</td>
-                <td>
-                    <p-tag [value]="order.status" [severity]="getSeverity(order.status)"></p-tag>
-                </td>
-                <td>{{ order.startDate | date }}</td>
-                <td>{{ order.endDate | date }}</td>
-                <td>
-                    <i class="pi"
-                        [ngClass]="{'pi-check-circle text-green-500': order.isPriority, 'pi-times-circle text-gray-400': !order.isPriority}"></i>
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="warning"
-                        (onClick)="editOrder(order.idOrder)"></p-button>
-                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
-                        (onClick)="deleteOrder(order.idOrder)"></p-button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <!-- Stats -->
+    <div class="list-stats">
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24;">
+                <i class="pi pi-cog"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ orders.length }}</div>
+                <div class="list-stat-label">Total Orders</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(96, 165, 250, 0.15); color: #60a5fa;">
+                <i class="pi pi-sync"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getInProgressCount() }}</div>
+                <div class="list-stat-label">In Production</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+                <i class="pi pi-check-circle"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getCompletedCount() }}</div>
+                <div class="list-stat-label">Completed</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(248, 113, 113, 0.15); color: #f87171;">
+                <i class="pi pi-star-fill"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getPriorityCount() }}</div>
+                <div class="list-stat-label">Priority</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <p-table [value]="orders" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Product</th>
+                    <th style="width: 100px">Quantity</th>
+                    <th style="width: 120px">Status</th>
+                    <th style="width: 120px">Start Date</th>
+                    <th style="width: 120px">End Date</th>
+                    <th style="width: 80px">Priority</th>
+                    <th style="width: 100px; text-align: center">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-order>
+                <tr>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-9 h-9 rounded-lg bg-gradient-to-br from-amber-500/20 to-orange-500/20 flex items-center justify-center text-amber-400">
+                                <i class="pi pi-cog"></i>
+                            </div>
+                            <span class="font-medium text-white">{{ order.productName }}</span>
+                        </div>
+                    </td>
+                    <td class="font-semibold text-white">{{ order.quantity }}</td>
+                    <td>
+                        <span class="status-pill" [ngClass]="getStatusClass(order.status)">
+                            <span class="status-dot"></span>
+                            {{ getStatusLabel(order.status) }}
+                        </span>
+                    </td>
+                    <td class="text-slate-400">{{ order.startDate | date:'shortDate' }}</td>
+                    <td class="text-slate-400">{{ order.endDate | date:'shortDate' }}</td>
+                    <td class="text-center">
+                        <i class="pi"
+                            [ngClass]="order.isPriority ? 'pi-star-fill text-amber-400' : 'pi-star text-slate-600'"></i>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="row-action edit" (click)="editOrder(order.idOrder)" title="Edit">
+                                <i class="pi pi-pencil"></i>
+                            </button>
+                            <button class="row-action delete" (click)="deleteOrder(order.idOrder)" title="Cancel">
+                                <i class="pi pi-times"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="7">
+                        <div class="empty-state">
+                            <i class="pi pi-cog"></i>
+                            <p>No production orders found</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>

@@ -1,35 +1,110 @@
-<div class="rounded-2xl bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6">
-  <div class="flex justify-between items-center mb-4">
-    <h2 class="text-xl font-bold">Products</h2>
-    <p-button label="Add Product" icon="pi pi-plus" (onClick)="addProduct()" styleClass="p-button-success"></p-button>
+<div class="list-page">
+  <!-- Header -->
+  <div class="list-header">
+    <div class="list-header-left">
+      <div class="list-icon blue">
+        <i class="pi pi-box"></i>
+      </div>
+      <div>
+        <h1 class="list-title">Product Catalog</h1>
+        <p class="list-subtitle">Manage products and inventory levels</p>
+      </div>
+    </div>
+    <div class="list-actions">
+      <button class="btn-primary" (click)="addProduct()">
+        <i class="pi pi-plus"></i>
+        Add Product
+      </button>
+    </div>
   </div>
 
-  <p-table [value]="products" [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
-    [rowsPerPageOptions]="[5, 10, 20]">
-    <ng-template pTemplate="header">
-      <tr>
-        <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-        <th pSortableColumn="productionTime">Production Time <p-sortIcon field="productionTime"></p-sortIcon></th>
-        <th pSortableColumn="cost">Cost <p-sortIcon field="cost"></p-sortIcon></th>
-        <th pSortableColumn="stock">Stock <p-sortIcon field="stock"></p-sortIcon></th>
-        <th pSortableColumn="activeOrdersCount">Active Orders <p-sortIcon field="activeOrdersCount"></p-sortIcon></th>
-        <th>Actions</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product>
-      <tr>
-        <td>{{ product.name }}</td>
-        <td>{{ product.productionTime }}</td>
-        <td>{{ product.cost | currency }}</td>
-        <td>{{ product.stock }}</td>
-        <td>{{ product.activeOrdersCount }}</td>
-        <td>
-          <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="warning"
-            (onClick)="editProduct(product.idProduct)"></p-button>
-          <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
-            (onClick)="deleteProduct(product.idProduct)"></p-button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+  <!-- Stats -->
+  <div class="list-stats">
+    <div class="list-stat">
+      <div class="list-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+        <i class="pi pi-box"></i>
+      </div>
+      <div class="list-stat-content">
+        <div class="list-stat-value">{{ products.length }}</div>
+        <div class="list-stat-label">Total Products</div>
+      </div>
+    </div>
+    <div class="list-stat">
+      <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+        <i class="pi pi-check-circle"></i>
+      </div>
+      <div class="list-stat-content">
+        <div class="list-stat-value">{{ getInStockCount() }}</div>
+        <div class="list-stat-label">In Stock</div>
+      </div>
+    </div>
+    <div class="list-stat">
+      <div class="list-stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #a78bfa;">
+        <i class="pi pi-shopping-cart"></i>
+      </div>
+      <div class="list-stat-content">
+        <div class="list-stat-value">{{ getTotalOrders() }}</div>
+        <div class="list-stat-label">Active Orders</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Table Container -->
+  <div class="table-container">
+    <p-table [value]="products" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Product</th>
+          <th style="width: 120px">Prod. Time</th>
+          <th style="width: 100px">Cost</th>
+          <th style="width: 100px">Stock</th>
+          <th style="width: 120px">Active Orders</th>
+          <th style="width: 100px; text-align: center">Actions</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr>
+          <td>
+            <div class="flex items-center gap-3">
+              <div
+                class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-blue-400">
+                <i class="pi pi-box"></i>
+              </div>
+              <span class="font-medium text-white">{{ product.name }}</span>
+            </div>
+          </td>
+          <td class="text-slate-400">{{ product.productionTime }}h</td>
+          <td class="font-semibold text-white">{{ product.cost | currency }}</td>
+          <td>
+            <span class="status-pill" [ngClass]="product.stock > 0 ? 'success' : 'danger'">
+              {{ product.stock }}
+            </span>
+          </td>
+          <td>
+            <span class="status-pill info">{{ product.activeOrdersCount || 0 }}</span>
+          </td>
+          <td>
+            <div class="row-actions">
+              <button class="row-action edit" (click)="editProduct(product.idProduct)" title="Edit">
+                <i class="pi pi-pencil"></i>
+              </button>
+              <button class="row-action delete" (click)="deleteProduct(product.idProduct)" title="Delete">
+                <i class="pi pi-trash"></i>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">
+            <div class="empty-state">
+              <i class="pi pi-box"></i>
+              <p>No products found</p>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>

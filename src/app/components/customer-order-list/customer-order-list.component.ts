@@ -22,94 +22,118 @@ import { CustomerOrder } from '../../models/models';
     ],
     providers: [ConfirmationService, MessageService],
     template: `
-        <div class="page-container">
-            <!-- Stats Section -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Total Orders</div>
-                        <div class="stat-value">{{ orders.length }}</div>
+        <div class="list-page">
+            <!-- Header -->
+            <div class="list-header">
+                <div class="list-header-left">
+                    <div class="list-icon amber">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    <div class="stat-icon blue"><i class="pi pi-shopping-bag"></i></div>
+                    <div>
+                        <h1 class="list-title">Customer Orders</h1>
+                        <p class="list-subtitle">Track and manage customer purchase orders</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Preparing</div>
-                        <div class="stat-value">{{ getPreparingCount() }}</div>
-                    </div>
-                    <div class="stat-icon amber"><i class="pi pi-box"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">In Transit</div>
-                        <div class="stat-value">{{ getInTransitCount() }}</div>
-                    </div>
-                    <div class="stat-icon purple"><i class="pi pi-truck"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Delivered</div>
-                        <div class="stat-value">{{ getDeliveredCount() }}</div>
-                    </div>
-                    <div class="stat-icon green"><i class="pi pi-check-circle"></i></div>
+                <div class="list-actions">
+                    <button class="btn-primary" routerLink="/customer-orders/new">
+                        <i class="pi pi-plus"></i>
+                        New Order
+                    </button>
                 </div>
             </div>
 
-            <!-- Main Card -->
-            <div class="card-content">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title">Customer Orders</h2>
-                        <p class="page-subtitle">Track and manage customer orders</p>
+            <!-- Stats -->
+            <div class="list-stats">
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ orders.length }}</div>
+                        <div class="list-stat-label">Total Orders</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24;">
+                        <i class="pi pi-box"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getPreparingCount() }}</div>
+                        <div class="list-stat-label">Preparing</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #a78bfa;">
+                        <i class="pi pi-truck"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getInTransitCount() }}</div>
+                        <div class="list-stat-label">In Transit</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+                        <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getDeliveredCount() }}</div>
+                        <div class="list-stat-label">Delivered</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <div class="table-toolbar" style="padding: 1rem;">
+                    <div class="toolbar-left">
                         <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus" 
                             placeholder="Filter by Status" (onChange)="onStatusFilter()"
                             [showClear]="true" styleClass="w-48"></p-dropdown>
-                        <p-button label="New Order" icon="pi pi-plus" routerLink="/customer-orders/new"
-                            styleClass="p-button-rounded"></p-button>
                     </div>
                 </div>
 
-                <p-table [value]="orders" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 25]" styleClass="p-datatable-sm">
+                <p-table [value]="orders" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th class="w-[60px]">ID</th>
+                            <th style="width: 60px">ID</th>
                             <th>Customer</th>
                             <th>Product</th>
-                            <th class="w-[80px]">Qty</th>
-                            <th class="w-[120px]">Status</th>
-                            <th class="w-[100px] text-center">Actions</th>
+                            <th style="width: 80px">Qty</th>
+                            <th style="width: 120px">Status</th>
+                            <th style="width: 100px; text-align: center">Actions</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-order>
-                        <tr class="hover:bg-white/5 transition-colors">
-                            <td class="text-gray-500 font-mono">#{{ order.idOrder }}</td>
+                        <tr>
+                            <td class="text-slate-500">#{{ order.idOrder }}</td>
                             <td>
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center text-orange-400 font-bold">
+                                    <div class="w-9 h-9 rounded-full bg-gradient-to-br from-orange-500/20 to-red-500/20 flex items-center justify-center text-orange-400 font-bold text-sm">
                                         {{ order.customerName?.charAt(0) || 'C' }}
                                     </div>
-                                    <span class="font-semibold text-white">{{ order.customerName }}</span>
+                                    <span class="font-medium text-white">{{ order.customerName }}</span>
                                 </div>
                             </td>
-                            <td class="text-gray-300">
+                            <td class="text-slate-400">
                                 <div class="flex items-center gap-2">
-                                    <i class="pi pi-tag text-gray-500 text-xs"></i>
+                                    <i class="pi pi-tag text-xs text-slate-500"></i>
                                     {{ order.productName }}
                                 </div>
                             </td>
-                            <td class="text-center font-medium text-white">{{ order.quantity }}</td>
+                            <td class="text-center font-semibold text-white">{{ order.quantity }}</td>
                             <td>
-                                <span class="status-badge" [ngClass]="getStatusClass(order.status)">{{ getStatusLabel(order.status) }}</span>
+                                <span class="status-pill" [ngClass]="getStatusClass(order.status)">
+                                    <span class="status-dot"></span>
+                                    {{ getStatusLabel(order.status) }}
+                                </span>
                             </td>
-                            <td class="text-center">
-                                <div class="action-btn-group justify-center">
-                                    <button [routerLink]="['/customer-orders/edit', order.idOrder]" class="action-btn edit" pTooltip="Edit">
-                                        <i class="pi pi-pencil text-sm"></i>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="row-action edit" [routerLink]="['/customer-orders/edit', order.idOrder]" title="Edit">
+                                        <i class="pi pi-pencil"></i>
                                     </button>
-                                    <button (click)="confirmDelete(order)" class="action-btn delete" pTooltip="Delete">
-                                        <i class="pi pi-trash text-sm"></i>
+                                    <button class="row-action delete" (click)="confirmDelete(order)" title="Delete">
+                                        <i class="pi pi-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -117,9 +141,9 @@ import { CustomerOrder } from '../../models/models';
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td colspan="6" class="text-center py-8">
-                                <div class="flex flex-col items-center gap-3 text-gray-400">
-                                    <i class="pi pi-shopping-bag text-4xl"></i>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    <i class="pi pi-shopping-cart"></i>
                                     <p>No orders found</p>
                                 </div>
                             </td>
@@ -128,7 +152,7 @@ import { CustomerOrder } from '../../models/models';
                 </p-table>
             </div>
         </div>
-        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+        <p-confirmDialog header="Confirm Deletion" icon="pi pi-exclamation-triangle"></p-confirmDialog>
         <p-toast position="bottom-right"></p-toast>
     `,
     styles: [`:host { display: block; }`]

@@ -49,4 +49,12 @@ export class ProductListComponent implements OnInit {
             });
         }
     }
+
+    getInStockCount(): number {
+        return this.products.filter(p => p.stock > 0).length;
+    }
+
+    getTotalOrders(): number {
+        return this.products.reduce((sum, p) => sum + (p.activeOrdersCount || 0), 0);
+    }
 }

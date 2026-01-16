@@ -1,51 +1,110 @@
-<div class="glass-card p-6 rounded-2xl border border-white/10 animate-fade-in-up">
-    <!-- Toolbar -->
-    <div class="flex items-center justify-between mb-6">
-        <div>
-            <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
-                User Management
-            </h2>
-            <p class="text-gray-400 text-sm mt-1">Manage system access and roles</p>
+<div class="list-page">
+    <!-- Header -->
+    <div class="list-header">
+        <div class="list-header-left">
+            <div class="list-icon blue">
+                <i class="pi pi-users"></i>
+            </div>
+            <div>
+                <h1 class="list-title">User Management</h1>
+                <p class="list-subtitle">Manage system access, roles, and permissions</p>
+            </div>
         </div>
-        <p-button label="Add User" icon="pi pi-plus" (click)="addUser()"
-            styleClass="p-button-rounded p-button-outlined"></p-button>
+        <div class="list-actions">
+            <button class="btn-primary" (click)="addUser()">
+                <i class="pi pi-plus"></i>
+                Add User
+            </button>
+        </div>
     </div>
 
-    <!-- Table -->
-    <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
-        <ng-template pTemplate="header">
-            <tr>
-                <th class="w-[50px]">ID</th>
-                <th class="w-[200px]">Full Name</th>
-                <th>Email</th>
-                <th class="w-[150px]">Role</th>
-                <th class="w-[120px] text-center">Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-user>
-            <tr class="hover:bg-white/5 transition-colors">
-                <td class="text-gray-400">#{{ user.id }}</td>
-                <td class="font-medium text-white">{{ user.firstName }} {{ user.lastName }}</td>
-                <td class="text-gray-300">{{ user.email }}</td>
-                <td>
-                    <p-tag [value]="formatRole(user.role)" [severity]="getSeverity(user.role)" [rounded]="true"></p-tag>
-                </td>
-                <td class="text-center">
-                    <div class="flex items-center justify-center gap-2">
-                        <button (click)="editUser(user.id!)"
-                            class="w-8 h-8 rounded-full bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 hover:scale-110 transition-all flex items-center justify-center">
-                            <i class="pi pi-pencil text-sm"></i>
-                        </button>
-                        <button (click)="deleteUser(user.id!)"
-                            class="w-8 h-8 rounded-full bg-red-500/10 text-red-400 hover:bg-red-500/20 hover:scale-110 transition-all flex items-center justify-center">
-                            <i class="pi pi-trash text-sm"></i>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <!-- Stats -->
+    <div class="list-stats">
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                <i class="pi pi-users"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ users.length }}</div>
+                <div class="list-stat-label">Total Users</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+                <i class="pi pi-shield"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getAdminCount() }}</div>
+                <div class="list-stat-label">Administrators</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(167, 139, 250, 0.15); color: #a78bfa;">
+                <i class="pi pi-briefcase"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ users.length - getAdminCount() }}</div>
+                <div class="list-stat-label">Standard Users</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <p-table [value]="users" [tableStyle]="{ 'min-width': '50rem' }" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 60px">ID</th>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th style="width: 200px">Role</th>
+                    <th style="width: 100px; text-align: center">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-user>
+                <tr>
+                    <td class="text-slate-500">#{{ user.id }}</td>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500/20 to-purple-500/20 flex items-center justify-center text-xs font-bold text-blue-400">
+                                {{ user.firstName?.charAt(0) }}{{ user.lastName?.charAt(0) }}
+                            </div>
+                            <span class="font-medium text-white">{{ user.firstName }} {{ user.lastName }}</span>
+                        </div>
+                    </td>
+                    <td class="text-slate-400">{{ user.email }}</td>
+                    <td>
+                        <span class="status-pill" [ngClass]="getRoleClass(user.role)">
+                            <span class="status-dot"></span>
+                            {{ formatRole(user.role) }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="row-action edit" (click)="editUser(user.id!)" title="Edit">
+                                <i class="pi pi-pencil"></i>
+                            </button>
+                            <button class="row-action delete" (click)="deleteUser(user.id!)" title="Delete">
+                                <i class="pi pi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            <i class="pi pi-users"></i>
+                            <p>No users found. Click "Add User" to create one.</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
 
-<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+<p-confirmDialog header="Confirm Deletion" icon="pi pi-exclamation-triangle"></p-confirmDialog>
 <p-toast position="bottom-right"></p-toast>

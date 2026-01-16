@@ -23,100 +23,125 @@ import { SupplyOrder } from '../../models/models';
     ],
     providers: [ConfirmationService, MessageService],
     template: `
-        <div class="page-container">
-            <!-- Stats Section -->
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Total Orders</div>
-                        <div class="stat-value">{{ orders.length }}</div>
+        <div class="list-page">
+            <!-- Header -->
+            <div class="list-header">
+                <div class="list-header-left">
+                    <div class="list-icon blue">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    <div class="stat-icon blue"><i class="pi pi-shopping-cart"></i></div>
+                    <div>
+                        <h1 class="list-title">Supply Orders</h1>
+                        <p class="list-subtitle">Manage procurement orders from suppliers</p>
+                    </div>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Pending</div>
-                        <div class="stat-value">{{ getPendingCount() }}</div>
-                    </div>
-                    <div class="stat-icon amber"><i class="pi pi-clock"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">In Progress</div>
-                        <div class="stat-value">{{ getInProgressCount() }}</div>
-                    </div>
-                    <div class="stat-icon purple"><i class="pi pi-spin pi-spinner"></i></div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-content">
-                        <div class="stat-label">Received</div>
-                        <div class="stat-value">{{ getReceivedCount() }}</div>
-                    </div>
-                    <div class="stat-icon green"><i class="pi pi-check-circle"></i></div>
+                <div class="list-actions">
+                    <button class="btn-primary" routerLink="/supply-orders/new">
+                        <i class="pi pi-plus"></i>
+                        New Order
+                    </button>
                 </div>
             </div>
 
-            <!-- Main Card -->
-            <div class="card-content">
-                <div class="page-header">
-                    <div>
-                        <h2 class="page-title">Supply Orders</h2>
-                        <p class="page-subtitle">Manage procurement orders from suppliers</p>
+            <!-- Stats -->
+            <div class="list-stats">
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #60a5fa;">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ orders.length }}</div>
+                        <div class="list-stat-label">Total Orders</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(251, 191, 36, 0.15); color: #fbbf24;">
+                        <i class="pi pi-clock"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getPendingCount() }}</div>
+                        <div class="list-stat-label">Pending</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #a78bfa;">
+                        <i class="pi pi-sync"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getInProgressCount() }}</div>
+                        <div class="list-stat-label">In Progress</div>
+                    </div>
+                </div>
+                <div class="list-stat">
+                    <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+                        <i class="pi pi-check-circle"></i>
+                    </div>
+                    <div class="list-stat-content">
+                        <div class="list-stat-value">{{ getReceivedCount() }}</div>
+                        <div class="list-stat-label">Received</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table Container -->
+            <div class="table-container">
+                <div class="table-toolbar" style="padding: 1rem;">
+                    <div class="toolbar-left">
                         <p-dropdown [options]="statusOptions" [(ngModel)]="selectedStatus" 
                             placeholder="Filter by Status" (onChange)="onStatusFilter()"
                             [showClear]="true" styleClass="w-48"></p-dropdown>
-                        <p-button label="New Order" icon="pi pi-plus" routerLink="/supply-orders/new"
-                            styleClass="p-button-rounded"></p-button>
                     </div>
                 </div>
 
-                <p-table [value]="orders" [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 25]" styleClass="p-datatable-sm">
+                <p-table [value]="orders" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th class="w-[60px]">ID</th>
+                            <th style="width: 60px">ID</th>
                             <th>Supplier</th>
-                            <th class="w-[120px]">Order Date</th>
-                            <th class="w-[140px]">Expected Delivery</th>
-                            <th class="w-[80px]">Items</th>
-                            <th class="w-[120px]">Status</th>
-                            <th class="w-[140px] text-center">Actions</th>
+                            <th style="width: 120px">Order Date</th>
+                            <th style="width: 140px">Expected Delivery</th>
+                            <th style="width: 80px">Items</th>
+                            <th style="width: 120px">Status</th>
+                            <th style="width: 130px; text-align: center">Actions</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-order>
-                        <tr class="hover:bg-white/5 transition-colors">
-                            <td class="text-gray-500 font-mono">#{{ order.idOrder }}</td>
+                        <tr>
+                            <td class="text-slate-500">#{{ order.idOrder }}</td>
                             <td>
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-blue-400">
+                                    <div class="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/20 to-cyan-500/20 flex items-center justify-center text-blue-400">
                                         <i class="pi pi-building"></i>
                                     </div>
-                                    <span class="font-semibold text-white">{{ order.supplierName }}</span>
+                                    <span class="font-medium text-white">{{ order.supplierName }}</span>
                                 </div>
                             </td>
-                            <td class="text-gray-300">{{ order.orderDate }}</td>
-                            <td class="text-gray-300">{{ order.expectedDeliveryDate }}</td>
+                            <td class="text-slate-400">{{ order.orderDate }}</td>
+                            <td class="text-slate-400">{{ order.expectedDeliveryDate }}</td>
                             <td class="text-center">
-                                <span class="status-badge info">{{ order.items?.length || 0 }}</span>
+                                <span class="status-pill info">{{ order.items?.length || 0 }}</span>
                             </td>
                             <td>
-                                <span class="status-badge" [ngClass]="getStatusClass(order.status)">{{ getStatusLabel(order.status) }}</span>
+                                <span class="status-pill" [ngClass]="getStatusClass(order.status)">
+                                    <span class="status-dot"></span>
+                                    {{ getStatusLabel(order.status) }}
+                                </span>
                             </td>
-                            <td class="text-center">
-                                <div class="action-btn-group justify-center">
-                                    <button [routerLink]="['/supply-orders/view', order.idOrder]" class="action-btn view" pTooltip="View">
-                                        <i class="pi pi-eye text-sm"></i>
+                            <td>
+                                <div class="row-actions">
+                                    <button class="row-action view" [routerLink]="['/supply-orders/view', order.idOrder]" title="View">
+                                        <i class="pi pi-eye"></i>
                                     </button>
-                                    <button [routerLink]="['/supply-orders/edit', order.idOrder]" class="action-btn edit" pTooltip="Edit">
-                                        <i class="pi pi-pencil text-sm"></i>
+                                    <button class="row-action edit" [routerLink]="['/supply-orders/edit', order.idOrder]" title="Edit">
+                                        <i class="pi pi-pencil"></i>
                                     </button>
-                                    <button *ngIf="order.status !== 'RECUE'" (click)="markAsReceived(order)" class="action-btn" 
-                                        style="background: rgba(34, 197, 94, 0.1); color: #4ade80;" pTooltip="Mark Received">
-                                        <i class="pi pi-check text-sm"></i>
+                                    <button *ngIf="order.status !== 'RECUE'" class="row-action" 
+                                        style="background: rgba(74, 222, 128, 0.1); color: #4ade80;" 
+                                        (click)="markAsReceived(order)" title="Mark Received">
+                                        <i class="pi pi-check"></i>
                                     </button>
-                                    <button (click)="confirmDelete(order)" class="action-btn delete" pTooltip="Delete">
-                                        <i class="pi pi-trash text-sm"></i>
+                                    <button class="row-action delete" (click)="confirmDelete(order)" title="Delete">
+                                        <i class="pi pi-trash"></i>
                                     </button>
                                 </div>
                             </td>
@@ -124,9 +149,9 @@ import { SupplyOrder } from '../../models/models';
                     </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td colspan="7" class="text-center py-8">
-                                <div class="flex flex-col items-center gap-3 text-gray-400">
-                                    <i class="pi pi-inbox text-4xl"></i>
+                            <td colspan="7">
+                                <div class="empty-state">
+                                    <i class="pi pi-inbox"></i>
                                     <p>No orders found</p>
                                 </div>
                             </td>
@@ -135,7 +160,7 @@ import { SupplyOrder } from '../../models/models';
                 </p-table>
             </div>
         </div>
-        <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle"></p-confirmDialog>
+        <p-confirmDialog header="Confirm Deletion" icon="pi pi-exclamation-triangle"></p-confirmDialog>
         <p-toast position="bottom-right"></p-toast>
     `,
     styles: [`:host { display: block; }`]

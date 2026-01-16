@@ -76,15 +76,15 @@ export class UserListComponent implements OnInit {
         if (!role) return '';
         const roles: { [key: string]: string } = {
             'ADMIN': 'Admin',
-            'GESTIONNAIRE_APPROVISIONNEMENT': 'Gestionnaire Approvisionnement',
-            'RESPONSABLE_ACHATS': 'Responsable Achats',
-            'SUPERVISEUR_LOGISTIQUE': 'Superviseur Logistique',
-            'CHEF_PRODUCTION': 'Chef de Production',
-            'PLANIFICATEUR': 'Planificateur',
-            'SUPERVISEUR_PRODUCTION': 'Superviseur Production',
-            'GESTIONNAIRE_COMMERCIAL': 'Gestionnaire Commercial',
-            'RESPONSABLE_LOGISTIQUE': 'Responsable Logistique',
-            'SUPERVISEUR_LIVRAISONS': 'Superviseur Livraisons'
+            'GESTIONNAIRE_APPROVISIONNEMENT': 'Procurement',
+            'RESPONSABLE_ACHATS': 'Purchasing',
+            'SUPERVISEUR_LOGISTIQUE': 'Logistics',
+            'CHEF_PRODUCTION': 'Production',
+            'PLANIFICATEUR': 'Planner',
+            'SUPERVISEUR_PRODUCTION': 'Production',
+            'GESTIONNAIRE_COMMERCIAL': 'Commercial',
+            'RESPONSABLE_LOGISTIQUE': 'Logistics',
+            'SUPERVISEUR_LIVRAISONS': 'Delivery'
         };
         return roles[role] || role;
     }
@@ -92,17 +92,30 @@ export class UserListComponent implements OnInit {
     getSeverity(role?: string): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | undefined {
         switch (role?.toUpperCase()) {
             case 'ADMIN':
-                return 'success'; // Green
-            case 'MANAGER':
+                return 'success';
             case 'RESPONSABLE_ACHATS':
             case 'RESPONSABLE_LOGISTIQUE':
-                return 'warning'; // Orange
-            case 'USER':
+                return 'warning';
             case 'PLANIFICATEUR':
             case 'GESTIONNAIRE_COMMERCIAL':
-                return 'info'; // Blue
+                return 'info';
             default:
-                return 'secondary'; // Gray
+                return 'secondary';
+        }
+    }
+
+    getAdminCount(): number {
+        return this.users.filter(u => u.role === 'ADMIN').length;
+    }
+
+    getRoleClass(role?: string): string {
+        switch (role?.toUpperCase()) {
+            case 'ADMIN': return 'success';
+            case 'RESPONSABLE_ACHATS':
+            case 'RESPONSABLE_LOGISTIQUE': return 'warning';
+            case 'PLANIFICATEUR':
+            case 'GESTIONNAIRE_COMMERCIAL': return 'info';
+            default: return 'purple';
         }
     }
 }

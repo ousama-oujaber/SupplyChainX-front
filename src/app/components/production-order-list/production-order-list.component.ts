@@ -63,4 +63,34 @@ export class ProductionOrderListComponent implements OnInit {
                 return undefined;
         }
     }
+
+    getInProgressCount(): number {
+        return this.orders.filter(o => o.status === 'EN_PRODUCTION').length;
+    }
+
+    getCompletedCount(): number {
+        return this.orders.filter(o => o.status === 'TERMINE').length;
+    }
+
+    getPriorityCount(): number {
+        return this.orders.filter(o => o.isPriority).length;
+    }
+
+    getStatusClass(status: string): string {
+        switch (status) {
+            case 'TERMINE': return 'success';
+            case 'EN_PRODUCTION': return 'info';
+            case 'EN_ATTENTE': return 'warning';
+            default: return 'info';
+        }
+    }
+
+    getStatusLabel(status: string): string {
+        switch (status) {
+            case 'TERMINE': return 'Completed';
+            case 'EN_PRODUCTION': return 'In Progress';
+            case 'EN_ATTENTE': return 'Pending';
+            default: return status;
+        }
+    }
 }

@@ -1,37 +1,112 @@
-<div class="rounded-2xl bg-slate-800/50 backdrop-blur-xl border border-slate-700/50 p-6">
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-bold">Bill of Materials</h2>
-        <p-button label="Create BOM" icon="pi pi-plus" (onClick)="addBom()" styleClass="p-button-success"></p-button>
+<div class="list-page">
+    <!-- Header -->
+    <div class="list-header">
+        <div class="list-header-left">
+            <div class="list-icon purple">
+                <i class="pi pi-list"></i>
+            </div>
+            <div>
+                <h1 class="list-title">Bill of Materials</h1>
+                <p class="list-subtitle">Manage product component requirements</p>
+            </div>
+        </div>
+        <div class="list-actions">
+            <button class="btn-primary" (click)="addBom()">
+                <i class="pi pi-plus"></i>
+                Create BOM
+            </button>
+        </div>
     </div>
 
-    <p-table [value]="boms" [tableStyle]="{'min-width': '50rem'}" [paginator]="true" [rows]="5"
-        [rowsPerPageOptions]="[5, 10, 20]">
-        <ng-template pTemplate="header">
-            <tr>
-                <th pSortableColumn="productName">Product <p-sortIcon field="productName"></p-sortIcon></th>
-                <th pSortableColumn="materialName">Material <p-sortIcon field="materialName"></p-sortIcon></th>
-                <th pSortableColumn="quantity">Quantity <p-sortIcon field="quantity"></p-sortIcon></th>
-                <th pSortableColumn="materialAvailable">Available <p-sortIcon field="materialAvailable"></p-sortIcon>
-                </th>
-                <th>Actions</th>
-            </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-bom>
-            <tr>
-                <td>{{ bom.productName }}</td>
-                <td>{{ bom.materialName }}</td>
-                <td>{{ bom.quantity }}</td>
-                <td>
-                    <i class="pi"
-                        [ngClass]="{'pi-check-circle text-green-500': bom.materialAvailable, 'pi-times-circle text-red-500': !bom.materialAvailable}"></i>
-                </td>
-                <td>
-                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="warning"
-                        (onClick)="editBom(bom.idBOM)"></p-button>
-                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
-                        (onClick)="deleteBom(bom.idBOM)"></p-button>
-                </td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <!-- Stats -->
+    <div class="list-stats">
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(168, 85, 247, 0.15); color: #a78bfa;">
+                <i class="pi pi-list"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ boms.length }}</div>
+                <div class="list-stat-label">Total BOMs</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
+                <i class="pi pi-check-circle"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getAvailableCount() }}</div>
+                <div class="list-stat-label">Materials Available</div>
+            </div>
+        </div>
+        <div class="list-stat">
+            <div class="list-stat-icon" style="background: rgba(248, 113, 113, 0.15); color: #f87171;">
+                <i class="pi pi-times-circle"></i>
+            </div>
+            <div class="list-stat-content">
+                <div class="list-stat-value">{{ getUnavailableCount() }}</div>
+                <div class="list-stat-label">Unavailable</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="table-container">
+        <p-table [value]="boms" [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Product</th>
+                    <th>Material</th>
+                    <th style="width: 100px">Quantity</th>
+                    <th style="width: 120px">Available</th>
+                    <th style="width: 100px; text-align: center">Actions</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-bom>
+                <tr>
+                    <td>
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-9 h-9 rounded-lg bg-gradient-to-br from-purple-500/20 to-pink-500/20 flex items-center justify-center text-purple-400">
+                                <i class="pi pi-box"></i>
+                            </div>
+                            <span class="font-medium text-white">{{ bom.productName }}</span>
+                        </div>
+                    </td>
+                    <td class="text-slate-400">
+                        <div class="flex items-center gap-2">
+                            <i class="pi pi-cog text-xs text-slate-500"></i>
+                            {{ bom.materialName }}
+                        </div>
+                    </td>
+                    <td class="font-semibold text-white">{{ bom.quantity }}</td>
+                    <td class="text-center">
+                        <span class="status-pill" [ngClass]="bom.materialAvailable ? 'success' : 'danger'">
+                            <span class="status-dot"></span>
+                            {{ bom.materialAvailable ? 'Yes' : 'No' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="row-actions">
+                            <button class="row-action edit" (click)="editBom(bom.idBOM)" title="Edit">
+                                <i class="pi pi-pencil"></i>
+                            </button>
+                            <button class="row-action delete" (click)="deleteBom(bom.idBOM)" title="Delete">
+                                <i class="pi pi-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            <i class="pi pi-list"></i>
+                            <p>No bill of materials found</p>
+                        </div>
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
 </div>
