@@ -1,36 +1,44 @@
 <!-- Main Container with subtle Grid Pattern -->
-<div class="min-h-screen bg-[#020617] text-white relative overflow-hidden selection:bg-primary-500/30">
-    
+<div class="min-h-screen bg-[#020617] text-white relative overflow-x-hidden selection:bg-primary-500/30">
+
     <!-- Premium Background Elements -->
     <div class="absolute inset-0 z-0">
         <!-- Subtle Grid -->
-        <div class="absolute inset-0 opacity-[0.15]" 
-             style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;">
+        <div class="absolute inset-0 opacity-[0.15]"
+            style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;">
         </div>
-        
+
         <!-- Refined Glows -->
-        <div class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary-600/10 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[120px]" style="animation-delay: 2s;"></div>
+        <div
+            class="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] bg-primary-600/10 rounded-full blur-[120px] animate-pulse">
+        </div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/10 rounded-full blur-[120px]"
+            style="animation-delay: 2s;"></div>
     </div>
 
     <!-- Header / Navbar -->
     <nav class="relative z-50 px-6 py-5 mx-auto max-w-7xl flex items-center justify-between">
         <div class="flex items-center gap-3 group cursor-pointer">
             <div class="relative">
-                <div class="absolute inset-0 bg-primary-500/50 blur-lg rounded-xl group-hover:bg-primary-400/60 transition-all"></div>
+                <div
+                    class="absolute inset-0 bg-primary-500/50 blur-lg rounded-xl group-hover:bg-primary-400/60 transition-all">
+                </div>
                 <div class="relative p-2.5 bg-[#0f172a] border border-white/10 rounded-xl backdrop-blur-xl">
                     <i class="pi pi-box text-xl text-primary-400"></i>
                 </div>
             </div>
-            <span class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60">
+            <span
+                class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60">
                 SupplyChainX
             </span>
         </div>
 
         <div class="flex items-center gap-6">
-            <a href="#" class="hidden md:block text-sm font-medium text-slate-400 hover:text-white transition-colors">Platform</a>
-            <a href="#" class="hidden md:block text-sm font-medium text-slate-400 hover:text-white transition-colors">Solutions</a>
-            
+            <a href="#"
+                class="hidden md:block text-sm font-medium text-slate-400 hover:text-white transition-colors">Platform</a>
+            <a href="#"
+                class="hidden md:block text-sm font-medium text-slate-400 hover:text-white transition-colors">Solutions</a>
+
             <div class="h-4 w-[1px] bg-white/10 hidden md:block"></div>
 
             <ng-container *ngIf="isAuthenticated; else loginBtn">
@@ -42,7 +50,9 @@
             <ng-template #loginBtn>
                 <button (click)="navigateToLogin()"
                     class="relative group px-6 py-2 rounded-full overflow-hidden font-medium text-sm transition-all">
-                    <div class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-400 group-hover:scale-105 transition-transform"></div>
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-primary-600 to-primary-400 group-hover:scale-105 transition-transform">
+                    </div>
                     <span class="relative flex items-center gap-2">
                         Sign In <i class="pi pi-arrow-right text-[10px]"></i>
                     </span>
@@ -53,14 +63,17 @@
 
     <!-- Hero Section -->
     <main class="relative z-10 container mx-auto px-6 pt-20 pb-24 flex flex-col items-center text-center">
-        
+
         <!-- Premium Badge -->
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 mb-10 animate-fade-in">
+        <div
+            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-500/10 border border-primary-500/20 mb-10 animate-fade-in">
             <span class="relative flex h-2 w-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
             </span>
-            <span class="text-[11px] font-bold tracking-[0.2em] text-primary-400 uppercase">System Status: Operational</span>
+            <span class="text-[11px] font-bold tracking-[0.2em] text-primary-400 uppercase">System Status:
+                Operational</span>
         </div>
 
         <h1 class="text-6xl md:text-8xl font-bold mb-8 tracking-tighter leading-[1.1] animate-fade-in-up">
@@ -70,12 +83,16 @@
             <br />
             <span class="inline-block text-white relative">
                 Reimagined.
-                <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 358 8" fill="none"><path d="M1 5.26316C64.6667 2.59649 210.6 -1.53684 357 6.66667" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/></svg>
+                <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 358 8" fill="none">
+                    <path d="M1 5.26316C64.6667 2.59649 210.6 -1.53684 357 6.66667" stroke="#38bdf8" stroke-width="2"
+                        stroke-linecap="round" />
+                </svg>
             </span>
         </h1>
 
-        <p class="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed mb-12 animate-fade-in-up" style="animation-delay: 200ms;">
-            The central nervous system for your global operations. Unified logistics, 
+        <p class="text-slate-400 max-w-2xl text-lg md:text-xl leading-relaxed mb-12 animate-fade-in-up"
+            style="animation-delay: 200ms;">
+            The central nervous system for your global operations. Unified logistics,
             real-time inventory, and AI-driven forecasting in one premium interface.
         </p>
 
@@ -86,22 +103,126 @@
                 <i class="pi pi-bolt group-hover:rotate-12 transition-transform"></i>
             </button>
 
-            <button class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#0f172a]/50 border border-white/10 text-white font-semibold hover:bg-[#1e293b] hover:border-white/20 transition-all backdrop-blur-md flex items-center justify-center gap-3">
+            <button
+                class="w-full sm:w-auto px-10 py-4 rounded-2xl bg-[#0f172a]/50 border border-white/10 text-white font-semibold hover:bg-[#1e293b] hover:border-white/20 transition-all backdrop-blur-md flex items-center justify-center gap-3">
                 <i class="pi pi-play-circle text-primary-400 text-lg"></i>
                 View Demo
             </button>
         </div>
 
-        <!-- Dashboard Preview Mockup (The "Premium" touch) -->
+        <!-- Encrypted Dashboard Preview -->
         <div class="mt-24 relative w-full max-w-5xl group animate-fade-in-up" style="animation-delay: 600ms;">
-            <div class="absolute -inset-1 bg-gradient-to-r from-primary-500 to-purple-500 rounded-2xl blur opacity-20 group-hover:opacity-30 transition"></div>
-            <div class="relative bg-[#0b0f1a] border border-white/10 rounded-2xl p-2 shadow-2xl overflow-hidden">
-                <div class="bg-[#020617] rounded-xl border border-white/5 overflow-hidden aspect-[16/9] flex items-center justify-center">
-                   <!-- Placeholder for an image or a mini-dashboard UI -->
-                   <div class="flex flex-col items-center gap-4 opacity-40">
-                       <i class="pi pi-chart-bar text-6xl"></i>
-                       <p class="text-xs uppercase tracking-widest italic">Encrypted Dashboard Preview</p>
-                   </div>
+            <!-- Outer Glow -->
+            <div
+                class="absolute -inset-2 bg-gradient-to-r from-primary-500/30 via-purple-500/20 to-primary-500/30 rounded-3xl blur-xl opacity-30 group-hover:opacity-50 transition-all duration-700">
+            </div>
+
+            <!-- Dashboard Container -->
+            <div class="relative bg-[#0b0f1a] border border-white/10 rounded-2xl p-3 shadow-2xl">
+                <!-- Title Bar -->
+                <div class="flex items-center justify-between px-4 py-2 border-b border-white/5 mb-2">
+                    <div class="flex items-center gap-2">
+                        <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                        <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+                    </div>
+                    <div class="flex items-center gap-2 text-xs text-slate-500">
+                        <i class="pi pi-lock text-[10px]"></i>
+                        <span>Encrypted Dashboard Preview</span>
+                    </div>
+                    <div class="w-16"></div>
+                </div>
+
+                <!-- Mock Dashboard UI -->
+                <div class="bg-[#020617] rounded-xl border border-white/5 overflow-hidden p-6">
+                    <div class="grid grid-cols-12 gap-4">
+                        <!-- Sidebar Mock -->
+                        <div class="col-span-2 space-y-3">
+                            <div class="h-8 bg-primary-500/20 rounded-lg animate-pulse"></div>
+                            <div class="h-6 bg-white/5 rounded-lg w-3/4"></div>
+                            <div class="h-6 bg-white/5 rounded-lg w-full"></div>
+                            <div class="h-6 bg-white/5 rounded-lg w-5/6"></div>
+                            <div class="h-6 bg-white/5 rounded-lg w-2/3"></div>
+                            <div class="h-6 bg-white/5 rounded-lg w-full"></div>
+                        </div>
+
+                        <!-- Main Content Mock -->
+                        <div class="col-span-10 space-y-4">
+                            <!-- Stats Row -->
+                            <div class="grid grid-cols-4 gap-3">
+                                <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Total Products
+                                    </div>
+                                    <div class="text-2xl font-bold text-white">2,847</div>
+                                    <div class="text-[10px] text-green-400 mt-1">↑ 12.5%</div>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Active Orders
+                                    </div>
+                                    <div class="text-2xl font-bold text-white">156</div>
+                                    <div class="text-[10px] text-primary-400 mt-1">↑ 8.3%</div>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Revenue</div>
+                                    <div class="text-2xl font-bold text-white">$1.2M</div>
+                                    <div class="text-[10px] text-green-400 mt-1">↑ 23.1%</div>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-1">Deliveries
+                                    </div>
+                                    <div class="text-2xl font-bold text-white">89</div>
+                                    <div class="text-[10px] text-orange-400 mt-1">→ On Track</div>
+                                </div>
+                            </div>
+
+                            <!-- Chart Mock -->
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="col-span-2 bg-white/5 rounded-xl p-4 border border-white/5 h-40">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-3">Revenue Trend
+                                    </div>
+                                    <!-- Fake Chart Lines -->
+                                    <div class="relative h-24 flex items-end gap-1">
+                                        <div
+                                            class="w-full h-[30%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[45%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[35%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[60%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[55%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[70%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[80%] bg-gradient-to-t from-primary-500/60 to-primary-500/30 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[75%] bg-gradient-to-t from-primary-500/50 to-primary-500/20 rounded-t">
+                                        </div>
+                                        <div
+                                            class="w-full h-[90%] bg-gradient-to-t from-primary-500/70 to-primary-500/40 rounded-t animate-pulse">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-white/5 rounded-xl p-4 border border-white/5 h-40">
+                                    <div class="text-[10px] text-slate-500 uppercase tracking-wider mb-3">Order Status
+                                    </div>
+                                    <!-- Fake Donut -->
+                                    <div class="flex items-center justify-center h-24">
+                                        <div class="w-20 h-20 rounded-full border-8 border-primary-500/60 border-t-purple-500/60 border-r-orange-500/60 animate-spin"
+                                            style="animation-duration: 8s;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -109,30 +230,38 @@
         <!-- Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-32 w-full max-w-6xl">
             <!-- Feature 1 -->
-            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-primary-500/50 transition-all duration-500">
-                <div class="w-14 h-14 rounded-2xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary-500/20 transition-all">
+            <div
+                class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-primary-500/50 transition-all duration-500">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-primary-500/10 border border-primary-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-primary-500/20 transition-all">
                     <i class="pi pi-shopping-cart text-2xl text-primary-400"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Smart Procurement</h3>
                 <p class="text-slate-400 text-sm leading-relaxed">
-                    Predict shortages before they happen. Our AI analyzes global markets to suggest optimal restock timings.
+                    Predict shortages before they happen. Our AI analyzes global markets to suggest optimal restock
+                    timings.
                 </p>
             </div>
 
             <!-- Feature 2 -->
-            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-purple-500/50 transition-all duration-500">
-                <div class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
+            <div
+                class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-purple-500/50 transition-all duration-500">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-purple-500/20 transition-all">
                     <i class="pi pi-cog text-2xl text-purple-400"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Production Flow</h3>
                 <p class="text-slate-400 text-sm leading-relaxed">
-                    Visualise your entire manufacturing floor. Identify bottlenecks and optimize throughput in real-time.
+                    Visualise your entire manufacturing floor. Identify bottlenecks and optimize throughput in
+                    real-time.
                 </p>
             </div>
 
             <!-- Feature 3 -->
-            <div class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-orange-500/50 transition-all duration-500">
-                <div class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-orange-500/20 transition-all">
+            <div
+                class="group p-8 rounded-3xl bg-gradient-to-b from-white/[0.03] to-transparent border border-white/10 hover:border-orange-500/50 transition-all duration-500">
+                <div
+                    class="w-14 h-14 rounded-2xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-orange-500/20 transition-all">
                     <i class="pi pi-truck text-2xl text-orange-400"></i>
                 </div>
                 <h3 class="text-xl font-bold mb-3">Global Logistics</h3>
