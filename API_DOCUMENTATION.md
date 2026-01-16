@@ -53,34 +53,94 @@ Accept: application/json
 
 ## 2. Authentication & Authorization
 
-> **Note:** The current development setup uses Spring Security with generated passwords. Production should implement JWT-based authentication.
+The API uses **Keycloak OAuth2** with JWT tokens for authentication.
 
-### Current Development Setup
+### Keycloak Server
 
-The API currently uses HTTP Basic authentication in development mode. You can access endpoints without authentication in development.
+| Setting | Value |
+|---------|-------|
+| URL | `http://localhost:8090` |
+| Realm | `supplychainx` |
+| Client ID | `supplychainx-api` |
+| Admin Console | `http://localhost:8090` (admin/admin) |
 
-### Role-Based Access (Future Implementation)
+### Getting a JWT Token
 
-The system defines the following roles:
+```bash
+curl -X POST "http://localhost:8090/realms/supplychainx/protocol/openid-connect/token" \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=supplychainx-api" \
+  -d "username=admin" \
+  -d "password=admin123" \
+  -d "grant_type=password"
+```
 
-| Role | Description |
-|------|-------------|
-| `ADMIN` | Full system access |
-| `GESTIONNAIRE_APPROVISIONNEMENT` | Procurement manager |
-| `RESPONSABLE_ACHATS` | Purchasing manager |
-| `SUPERVISEUR_LOGISTIQUE` | Logistics supervisor |
-| `CHEF_PRODUCTION` | Production manager |
-| `PLANIFICATEUR` | Production planner |
-| `SUPERVISEUR_PRODUCTION` | Production supervisor |
-| `GESTIONNAIRE_COMMERCIAL` | Sales manager |
-| `RESPONSABLE_LOGISTIQUE` | Logistics manager |
-| `SUPERVISEUR_LIVRAISONS` | Delivery supervisor |
+**Response:**
+```json
+{
+  "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI...",
+  "expires_in": 3600,
+  "token_type": "Bearer"
+}
+```
 
-### JWT Token Usage (When Implemented)
+### Using the Token
+
+Include the token in the `Authorization` header:
 
 ```http
-Authorization: Bearer <your_jwt_token>
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI...
 ```
+
+### Test Accounts
+
+#### Admin Account (Full Access)
+
+| Field | Value |
+|-------|-------|
+| Username | `admin` |
+| Password | `admin123` |
+| Role | `ADMIN` |
+
+#### Procurement Module Accounts
+
+| Username | Password | Role | Access |
+|----------|----------|------|--------|
+| `procurement.manager` | `test123` | GESTIONNAIRE_APPROVISIONNEMENT | Procurement R/W |
+| `purchasing.manager` | `test123` | RESPONSABLE_ACHATS | Procurement Full |
+
+#### Production Module Accounts
+
+| Username | Password | Role | Access |
+|----------|----------|------|--------|
+| `production.manager` | `test123` | CHEF_PRODUCTION | Production Full |
+| `planner` | `test123` | PLANIFICATEUR | Production R/W |
+| `production.supervisor` | `test123` | SUPERVISEUR_PRODUCTION | Production R/W |
+
+#### Delivery Module Accounts
+
+| Username | Password | Role | Access |
+|----------|----------|------|--------|
+| `sales.manager` | `test123` | GESTIONNAIRE_COMMERCIAL | Delivery R/W |
+| `logistics.manager` | `test123` | RESPONSABLE_LOGISTIQUE | Delivery Full |
+| `delivery.supervisor` | `test123` | SUPERVISEUR_LIVRAISONS | Delivery R/W |
+| `logistics.supervisor` | `test123` | SUPERVISEUR_LOGISTIQUE | Read Only |
+
+### Role-Based Access Matrix
+
+| Endpoint | ADMIN | Procurement Roles | Production Roles | Delivery Roles |
+|----------|-------|-------------------|------------------|----------------|
+| `/api/users/**` | ✅ Full | ❌ | ❌ | ❌ |
+| `/api/procurement/**` | ✅ Full | ✅ R/W | 📖 Read | 📖 Read |
+| `/api/production/**` | ✅ Full | 📖 Read | ✅ R/W | 📖 Read |
+| `/api/delivery/**` | ✅ Full | ❌ | 📖 Read | ✅ R/W |
+
+### HTTP Status Codes for Auth
+
+| Code | Meaning |
+|------|---------|
+| `401` | Unauthorized - Missing or invalid token |
+| `403` | Forbidden - Token valid but insufficient permissions |
 
 ---
 
@@ -771,11 +831,11 @@ API_BASE_URL=https://api.supplychainx.com
 
 ### CORS Configuration
 
-The backend is configured to allow requests from:
-- `http://localhost:4200` (Angular dev server)
-- `http://localhost:3000` (React dev server)
+The backend is configured to allow requests **only from Angular**:
+- `http://localhost:4200`
+- `https://localhost:4200`
 
-For production, update the CORS configuration in `SecurityConfig.java`.
+> **Note:** Other origins (including React on port 3000) are blocked.
 
 ### API Health Check
 

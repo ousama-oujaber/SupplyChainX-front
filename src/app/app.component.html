@@ -7,72 +7,91 @@
     <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]"></div>
   </div>
 
-  <!-- Sidebar -->
-  <aside class="w-72 relative z-10 flex flex-col glass-effect border-r-0 m-4 rounded-2xl">
-    <!-- Logo -->
-    <div class="h-20 flex items-center px-8 border-b border-white/5">
-      <div class="flex items-center gap-3 text-primary-400">
-        <div class="p-2 bg-primary-500/10 rounded-lg">
-          <i class="pi pi-box text-2xl"></i>
-        </div>
-        <span class="font-bold text-xl tracking-tight text-white/90">SupplyChainX</span>
-      </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
-      <div *ngFor="let item of items">
-        <a [routerLink]="item.routerLink"
-          routerLinkActive="bg-primary-500/10 text-primary-400 shadow-[0_0_15px_rgba(14,165,233,0.15)] border-primary-500/20"
-          class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-white/5 border border-transparent transition-all duration-300 group">
-          <i [class]="item.icon" class="text-lg group-hover:scale-110 transition-transform duration-300"></i>
-          <span class="font-medium tracking-wide text-sm">{{ item.label }}</span>
-        </a>
-      </div>
-    </nav>
-
-    <!-- User Profile -->
-    <div class="p-4 border-t border-white/5 mx-2 mb-2">
-      <div class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors cursor-pointer group">
-        <div
-          class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/10 group-hover:ring-primary-500/50 transition-all">
-          AD
-        </div>
-        <div class="flex flex-col">
-          <span class="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors">Admin User</span>
-          <span class="text-xs text-slate-500 group-hover:text-primary-400 transition-colors">admin&#64;scx.com</span>
+  <!-- Full Layout (Sidebar + Main) - Only for authenticated pages -->
+  <ng-container *ngIf="showLayout">
+    <!-- Sidebar -->
+    <aside class="w-72 relative z-10 flex flex-col glass-effect border-r-0 m-4 rounded-2xl">
+      <!-- Logo -->
+      <div class="h-20 flex items-center px-8 border-b border-white/5">
+        <div class="flex items-center gap-3 text-primary-400">
+          <div class="p-2 bg-primary-500/10 rounded-lg">
+            <i class="pi pi-box text-2xl"></i>
+          </div>
+          <span class="font-bold text-xl tracking-tight text-white/90">SupplyChainX</span>
         </div>
       </div>
-    </div>
-  </aside>
 
-  <!-- Main Content -->
-  <main class="flex-1 flex flex-col relative z-10 overflow-hidden">
-    <!-- Top Header -->
-    <header class="h-20 flex items-center justify-between px-8 mx-4 mt-4 glass-effect rounded-2xl mb-4">
-      <h2 class="text-lg font-semibold text-slate-100 tracking-wide">
-        Dashboard
-        <span class="text-slate-500 font-normal text-sm ml-2">Overview</span>
-      </h2>
-
-      <div class="flex items-center gap-4">
-        <div class="relative">
-          <input type="text" placeholder="Search..."
-            class="bg-slate-900/50 border border-white/10 rounded-full px-4 py-2 text-sm text-slate-300 focus:outline-none focus:border-primary-500/50 w-64 transition-all" />
-          <i class="pi pi-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+      <!-- Navigation -->
+      <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-2">
+        <div *ngFor="let item of items">
+          <a [routerLink]="item.routerLink"
+            routerLinkActive="bg-primary-500/10 text-primary-400 shadow-[0_0_15px_rgba(14,165,233,0.15)] border-primary-500/20"
+            class="flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-slate-100 hover:bg-white/5 border border-transparent transition-all duration-300 group">
+            <i [class]="item.icon" class="text-lg group-hover:scale-110 transition-transform duration-300"></i>
+            <span class="font-medium tracking-wide text-sm">{{ item.label }}</span>
+          </a>
         </div>
+      </nav>
 
-        <button
-          class="w-10 h-10 rounded-full bg-slate-800/50 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-primary-500/30 hover:bg-primary-500/10 transition-all">
-          <i class="pi pi-bell text-lg"></i>
-          <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+      <!-- Logout Section - Always visible -->
+      <div class="p-4 border-t border-white/5 mx-2 mb-2">
+        <!-- User Profile (when authenticated) -->
+        <div *ngIf="isAuthenticated"
+          class="flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors group mb-2">
+          <div
+            class="w-10 h-10 rounded-full bg-gradient-to-tr from-primary-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs ring-2 ring-white/10 group-hover:ring-primary-500/50 transition-all">
+            {{ getInitials() }}
+          </div>
+          <div class="flex flex-col flex-1">
+            <span class="text-sm font-semibold text-slate-200 group-hover:text-white transition-colors">{{
+              getDisplayName() }}</span>
+            <span
+              class="text-xs text-slate-500 group-hover:text-primary-400 transition-colors truncate max-w-[140px]">{{
+              getEmail() }}</span>
+          </div>
+        </div>
+        <!-- Logout Button - Always visible -->
+        <button (click)="logout()"
+          class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 hover:bg-red-500/20 hover:text-red-300 hover:border-red-500/30 transition-all duration-300">
+          <i class="pi pi-sign-out text-sm"></i>
+          <span class="font-medium text-sm">Logout</span>
         </button>
       </div>
-    </header>
+    </aside>
 
-    <!-- Page Content -->
-    <div class="flex-1 overflow-y-auto px-8 pb-8 custom-scrollbar">
-      <router-outlet></router-outlet>
-    </div>
-  </main>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col relative z-10 overflow-hidden">
+      <!-- Top Header -->
+      <header class="h-20 flex items-center justify-between px-8 mx-4 mt-4 glass-effect rounded-2xl mb-4">
+        <h2 class="text-lg font-semibold text-slate-100 tracking-wide">
+          Dashboard
+          <span class="text-slate-500 font-normal text-sm ml-2">Overview</span>
+        </h2>
+
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <input type="text" placeholder="Search..."
+              class="bg-slate-900/50 border border-white/10 rounded-full px-4 py-2 text-sm text-slate-300 focus:outline-none focus:border-primary-500/50 w-64 transition-all" />
+            <i class="pi pi-search absolute right-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+          </div>
+
+          <button
+            class="w-10 h-10 rounded-full bg-slate-800/50 border border-white/10 flex items-center justify-center text-slate-400 hover:text-white hover:border-primary-500/30 hover:bg-primary-500/10 transition-all">
+            <i class="pi pi-bell text-lg"></i>
+            <span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <div class="flex-1 overflow-y-auto px-8 pb-8 custom-scrollbar">
+        <router-outlet></router-outlet>
+      </div>
+    </main>
+  </ng-container>
+
+  <!-- Public Pages (Login, Access Denied) - Full screen without layout -->
+  <div *ngIf="!showLayout" class="flex-1 relative z-10">
+    <router-outlet></router-outlet>
+  </div>
 </div>

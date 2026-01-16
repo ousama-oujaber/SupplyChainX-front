@@ -32,6 +32,11 @@
               },
               {
                 "glob": "**/*",
+                "input": "src/assets",
+                "output": "/assets"
+              },
+              {
+                "glob": "**/*",
                 "input": "node_modules/primeng/resources/themes/aura-dark-blue/fonts",
                 "output": "/themes/aura-dark-blue/fonts"
               }
@@ -43,6 +48,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.production.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
