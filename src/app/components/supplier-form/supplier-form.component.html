@@ -1,0 +1,55 @@
+<div class="max-w-2xl mx-auto mt-10">
+    <div class="glass-card p-8 rounded-2xl border border-white/10 animate-fade-in-up">
+        <h2 class="text-2xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-400">
+            {{ isEditMode ? 'Edit Supplier' : 'New Supplier' }}
+        </h2>
+
+        <form (ngSubmit)="onSubmit()" #supplierForm="ngForm" class="space-y-6">
+
+            <!-- Name -->
+            <div class="flex flex-col gap-2 pt-4">
+                <p-floatLabel>
+                    <input type="text" pInputText id="name" name="name" [(ngModel)]="supplier.name" required
+                        class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                    <label for="name" class="text-gray-300">Supplier Name</label>
+                </p-floatLabel>
+            </div>
+
+            <!-- Contact -->
+            <div class="flex flex-col gap-2 pt-2">
+                <p-floatLabel>
+                    <input type="text" pInputText id="contact" name="contact" [(ngModel)]="supplier.contact" required
+                        class="w-full bg-gray-900/50 border-gray-700 text-white focus:border-blue-500 transition-colors" />
+                    <label for="contact" class="text-gray-300">Contact Info (Email | Phone)</label>
+                </p-floatLabel>
+            </div>
+
+            <!-- Rating & Lead Time -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+                <div class="flex flex-col gap-2">
+                    <div class="flex flex-col gap-2">
+                        <label for="rating" class="text-gray-300 font-bold mb-1">Rating</label>
+                        <p-rating [(ngModel)]="supplier.rating" name="rating" [cancel]="false"></p-rating>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <p-floatLabel>
+                        <p-inputNumber id="leadTime" name="leadTime" [(ngModel)]="supplier.leadTime" [min]="0"
+                            [showButtons]="true" suffix=" days" styleClass="w-full"
+                            inputStyleClass="w-full bg-gray-900/50 border-gray-700 text-white">
+                        </p-inputNumber>
+                        <label for="leadTime" class="text-gray-300">Lead Time</label>
+                    </p-floatLabel>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="flex items-center gap-4 pt-4">
+                <p-button label="Save" type="submit" [disabled]="!supplierForm.valid" icon="pi pi-check"
+                    styleClass="p-button-primary"></p-button>
+                <p-button label="Cancel" type="button" (click)="onCancel()" icon="pi pi-times"
+                    styleClass="p-button-text text-gray-400 hover:text-white"></p-button>
+            </div>
+        </form>
+    </div>
+</div>

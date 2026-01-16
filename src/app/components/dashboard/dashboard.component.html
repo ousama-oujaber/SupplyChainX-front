@@ -73,6 +73,35 @@
         </div>
     </div>
 
+    <!-- Charts Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="glass-card p-6 rounded-2xl border border-white/10 flex flex-col">
+            <h3 class="text-xl font-bold text-white mb-4">Financial Overview</h3>
+            <div class="h-80 w-full"> 
+                <p-chart 
+                    type="line" 
+                    [data]="chartData" 
+                    [options]="chartOptions" 
+                    height="100%" 
+                    styleClass="w-full h-full">
+                </p-chart>
+            </div>
+        </div>
+
+        <div class="glass-card p-6 rounded-2xl border border-white/10 flex flex-col">
+            <h3 class="text-xl font-bold text-white mb-4">Order Status Distribution</h3>
+            <div class="h-80 w-full">
+                <p-chart 
+                    type="doughnut" 
+                    [data]="pieData" 
+                    [options]="pieOptions" 
+                    height="100%"
+                    styleClass="w-full h-full">
+                </p-chart>
+            </div>
+        </div>
+    </div>
+
     <!-- Recent Orders Section -->
     <div
         class="bg-white dark:bg-slate-800 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 overflow-hidden">
