@@ -1,42 +1,137 @@
-<div class="login-container">
-    <!-- Background Effects -->
-    <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-primary-600/20 rounded-full blur-[120px]"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 rounded-full blur-[120px]">
+<div class="min-h-screen bg-[#020617] text-white relative overflow-hidden selection:bg-primary-500/30">
+
+    <!-- Premium Background Elements -->
+    <div class="absolute inset-0 z-0">
+        <!-- Subtle Grid -->
+        <div class="absolute inset-0 opacity-[0.08]"
+            style="background-image: radial-gradient(#fff 1px, transparent 1px); background-size: 40px 40px;">
         </div>
+
+        <!-- Refined Glows -->
+        <div
+            class="absolute top-[-20%] left-[-20%] w-[70%] h-[70%] bg-primary-600/15 rounded-full blur-[150px] animate-pulse">
+        </div>
+        <div class="absolute bottom-[-20%] right-[-20%] w-[60%] h-[60%] bg-purple-600/10 rounded-full blur-[150px]"
+            style="animation-delay: 2s;"></div>
     </div>
 
-    <!-- Login Card -->
-    <div class="login-card glass-effect">
-        <!-- Logo -->
-        <div class="login-logo">
-            <div class="logo-icon">
-                <i class="pi pi-box text-3xl"></i>
+    <!-- Header with Logo -->
+    <header class="relative z-50 px-6 py-5 flex items-center justify-center">
+        <a routerLink="/" class="flex items-center gap-3 group cursor-pointer">
+            <div class="relative">
+                <div
+                    class="absolute inset-0 bg-primary-500/50 blur-lg rounded-xl group-hover:bg-primary-400/60 transition-all">
+                </div>
+                <div class="relative p-2.5 bg-[#0f172a] border border-white/10 rounded-xl backdrop-blur-xl">
+                    <i class="pi pi-box text-xl text-primary-400"></i>
+                </div>
             </div>
-            <h1 class="logo-text">SupplyChainX</h1>
+            <span
+                class="font-bold text-xl tracking-tight bg-clip-text text-transparent bg-gradient-to-br from-white to-white/60">
+                SupplyChainX
+            </span>
+        </a>
+    </header>
+
+    <!-- Login Content -->
+    <main class="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-120px)] px-6">
+
+        <!-- Login Card -->
+        <div class="relative w-full max-w-md">
+            <!-- Card Glow -->
+            <div
+                class="absolute -inset-1 bg-gradient-to-r from-primary-500/20 via-purple-500/20 to-primary-500/20 rounded-3xl blur-xl opacity-60">
+            </div>
+
+            <!-- Card Content -->
+            <div class="relative bg-[#0b0f1a]/80 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl">
+
+                <!-- Lock Icon with Glow -->
+                <div class="flex justify-center mb-8">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-primary-500/30 blur-xl rounded-full"></div>
+                        <div
+                            class="relative w-20 h-20 rounded-2xl bg-gradient-to-br from-primary-500/20 to-purple-500/20 border border-white/10 flex items-center justify-center">
+                            <i class="pi pi-lock text-3xl text-primary-400"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Welcome Message -->
+                <div class="text-center mb-8">
+                    <h1
+                        class="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-b from-white to-white/70">
+                        Welcome Back
+                    </h1>
+                    <p class="text-slate-400 text-sm">
+                        Sign in to access your enterprise dashboard
+                    </p>
+                </div>
+
+                <!-- Features List -->
+                <div class="space-y-3 mb-8">
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                        <div class="w-8 h-8 rounded-lg bg-primary-500/10 flex items-center justify-center">
+                            <i class="pi pi-shield text-sm text-primary-400"></i>
+                        </div>
+                        <span class="text-sm text-slate-300">Enterprise-grade security</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                        <div class="w-8 h-8 rounded-lg bg-purple-500/10 flex items-center justify-center">
+                            <i class="pi pi-users text-sm text-purple-400"></i>
+                        </div>
+                        <span class="text-sm text-slate-300">Single Sign-On (SSO) enabled</span>
+                    </div>
+                    <div class="flex items-center gap-3 p-3 rounded-xl bg-white/[0.03] border border-white/5">
+                        <div class="w-8 h-8 rounded-lg bg-green-500/10 flex items-center justify-center">
+                            <i class="pi pi-check-circle text-sm text-green-400"></i>
+                        </div>
+                        <span class="text-sm text-slate-300">Role-based access control</span>
+                    </div>
+                </div>
+
+                <!-- Login Button -->
+                <button (click)="login()" [disabled]="isLoading"
+                    class="w-full relative group overflow-hidden rounded-xl transition-all duration-300"
+                    [class.opacity-70]="isLoading" [class.cursor-not-allowed]="isLoading">
+
+                    <!-- Button Background -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-primary-600 via-primary-500 to-purple-500 group-hover:scale-105 transition-transform duration-500">
+                    </div>
+
+                    <!-- Button Shine Effect -->
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000">
+                    </div>
+
+                    <!-- Button Content -->
+                    <div class="relative flex items-center justify-center gap-3 px-6 py-4 font-semibold">
+                        <ng-container *ngIf="!isLoading">
+                            <i class="pi pi-sign-in"></i>
+                            <span>Sign in with Keycloak</span>
+                            <i class="pi pi-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                        </ng-container>
+                        <ng-container *ngIf="isLoading">
+                            <i class="pi pi-spin pi-spinner"></i>
+                            <span>Redirecting to SSO...</span>
+                        </ng-container>
+                    </div>
+                </button>
+
+                <!-- Info Footer -->
+                <div class="mt-6 flex items-center justify-center gap-2 text-xs text-slate-500">
+                    <i class="pi pi-lock text-[10px]"></i>
+                    <span>Secure authentication powered by Keycloak</span>
+                </div>
+            </div>
         </div>
 
-        <!-- Welcome Message -->
-        <div class="login-message">
-            <h2>Welcome Back</h2>
-            <p>Sign in to access your supply chain management dashboard</p>
-        </div>
-
-        <!-- Login Button -->
-        <button (click)="login()" [disabled]="isLoading" class="login-button">
-            <ng-container *ngIf="!isLoading">
-                <i class="pi pi-sign-in mr-2"></i>
-                Sign in with Keycloak
-            </ng-container>
-            <ng-container *ngIf="isLoading">
-                <i class="pi pi-spin pi-spinner mr-2"></i>
-                Redirecting...
-            </ng-container>
-        </button>
-
-        <!-- Info -->
-        <p class="login-info">
-            Secure authentication powered by Keycloak
-        </p>
-    </div>
+        <!-- Back to Home Link -->
+        <a routerLink="/"
+            class="mt-8 flex items-center gap-2 text-sm text-slate-400 hover:text-white transition-colors group">
+            <i class="pi pi-arrow-left text-xs group-hover:-translate-x-1 transition-transform"></i>
+            <span>Back to Home</span>
+        </a>
+    </main>
 </div>
