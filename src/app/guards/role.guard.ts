@@ -3,21 +3,6 @@ import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { Role } from '../models/auth.models';
 
-/**
- * Factory function that creates a role-based guard.
- * Checks if the user has any of the required roles.
- *
- * @param allowedRoles Array of roles that are allowed to access the route
- * @returns CanActivateFn guard function
- *
- * @example
- * // In routes
- * {
- *   path: 'users',
- *   canActivate: [roleGuard(['ADMIN'])],
- *   component: UserListComponent
- * }
- */
 export function roleGuard(allowedRoles: (Role | string)[]): CanActivateFn {
     return async () => {
         const authService = inject(AuthService);
@@ -48,9 +33,6 @@ export function roleGuard(allowedRoles: (Role | string)[]): CanActivateFn {
     };
 }
 
-/**
- * Guard for procurement module routes
- */
 export const procurementGuard: CanActivateFn = async () => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -75,9 +57,6 @@ export const procurementGuard: CanActivateFn = async () => {
     }
 };
 
-/**
- * Guard for production module routes
- */
 export const productionGuard: CanActivateFn = async () => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -102,9 +81,6 @@ export const productionGuard: CanActivateFn = async () => {
     }
 };
 
-/**
- * Guard for delivery module routes
- */
 export const deliveryGuard: CanActivateFn = async () => {
     const authService = inject(AuthService);
     const router = inject(Router);
@@ -129,9 +105,6 @@ export const deliveryGuard: CanActivateFn = async () => {
     }
 };
 
-/**
- * Guard for admin-only routes (e.g., user management)
- */
 export const adminGuard: CanActivateFn = async () => {
     const authService = inject(AuthService);
     const router = inject(Router);

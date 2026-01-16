@@ -4,10 +4,6 @@ import { Router } from '@angular/router';
 import { KeycloakService } from 'keycloak-angular';
 import { from, switchMap, catchError, throwError, of } from 'rxjs';
 
-/**
- * HTTP interceptor that adds the Keycloak JWT token to all API requests
- * and handles authentication errors (401, 403).
- */
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
     const keycloak = inject(KeycloakService);
     const router = inject(Router);

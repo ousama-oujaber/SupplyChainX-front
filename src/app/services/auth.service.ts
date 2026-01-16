@@ -1,13 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { KeycloakService } from 'keycloak-angular';
 import { BehaviorSubject, Observable, from } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { UserProfile, Role, ROLES } from '../models/auth.models';
 
-/**
- * Authentication service that wraps Keycloak functionality.
- * Provides user authentication state, profile info, and role checking.
- */
 @Injectable({
     providedIn: 'root'
 })
@@ -17,19 +12,16 @@ export class AuthService {
     private userProfileSubject = new BehaviorSubject<UserProfile | null>(null);
     private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
-    /** Observable of the current user profile */
+    // Observable of the current user profile
     readonly userProfile$: Observable<UserProfile | null> = this.userProfileSubject.asObservable();
 
-    /** Observable of authentication state */
+    // Observable of authentication state
     readonly isAuthenticated$: Observable<boolean> = this.isAuthenticatedSubject.asObservable();
 
     constructor() {
         this.loadUserProfile();
     }
 
-    /**
-     * Load user profile from Keycloak after authentication
-     */
     private async loadUserProfile(): Promise<void> {
         try {
             const isLoggedIn = await this.keycloak.isLoggedIn();
@@ -56,44 +48,27 @@ export class AuthService {
         }
     }
 
-    /**
-     * Redirect to Keycloak login page
-     */
+
     login(): void {
         this.keycloak.login();
     }
 
-    /**
-     * Logout from Keycloak and clear session
-     */
     logout(): void {
         this.keycloak.logout(window.location.origin);
     }
 
-    /**
-     * Get the current JWT token
-     */
     async getToken(): Promise<string> {
         return await this.keycloak.getToken();
     }
 
-    /**
-     * Check if user is currently authenticated
-     */
     async isAuthenticated(): Promise<boolean> {
         return await this.keycloak.isLoggedIn();
     }
 
-    /**
-     * Get current user profile
-     */
     getUserProfile(): UserProfile | null {
         return this.userProfileSubject.value;
     }
 
-    /**
-     * Get user's display name (firstName lastName or username)
-     */
     getDisplayName(): string {
         const profile = this.userProfileSubject.value;
         if (!profile) return 'Guest';
@@ -104,9 +79,6 @@ export class AuthService {
         return profile.username;
     }
 
-    /**
-     * Get user initials for avatar
-     */
     getInitials(): string {
         const profile = this.userProfileSubject.value;
         if (!profile) return '?';
@@ -117,38 +89,23 @@ export class AuthService {
         return profile.username.substring(0, 2).toUpperCase();
     }
 
-    /**
-     * Get all roles assigned to the current user
-     */
     getRoles(): Role[] {
         return this.keycloak.getUserRoles() as Role[];
     }
 
-    /**
-     * Check if user has a specific role
-     */
     hasRole(role: Role | string): boolean {
         const roles = this.getRoles();
         return roles.includes(role as Role);
     }
 
-    /**
-     * Check if user has any of the specified roles
-     */
     hasAnyRole(roles: (Role | string)[]): boolean {
         return roles.some(role => this.hasRole(role));
     }
 
-    /**
-     * Check if user is admin
-     */
     isAdmin(): boolean {
         return this.hasRole(ROLES.ADMIN);
     }
 
-    /**
-     * Check if user has access to procurement module
-     */
     hasProcurementAccess(): boolean {
         return this.hasAnyRole([
             ROLES.ADMIN,
@@ -157,9 +114,6 @@ export class AuthService {
         ]);
     }
 
-    /**
-     * Check if user has access to production module
-     */
     hasProductionAccess(): boolean {
         return this.hasAnyRole([
             ROLES.ADMIN,
@@ -169,9 +123,6 @@ export class AuthService {
         ]);
     }
 
-    /**
-     * Check if user has access to delivery module
-     */
     hasDeliveryAccess(): boolean {
         return this.hasAnyRole([
             ROLES.ADMIN,

@@ -1,7 +1,3 @@
-/**
- * Role constants matching the backend Keycloak configuration.
- * Based on API_DOCUMENTATION.md role-based access matrix.
- */
 export const ROLES = {
     // Admin - Full access to all modules
     ADMIN: 'ADMIN',
@@ -24,9 +20,6 @@ export const ROLES = {
 
 export type Role = typeof ROLES[keyof typeof ROLES];
 
-/**
- * Role groups for module access control
- */
 export const ROLE_GROUPS = {
     PROCUREMENT: [
         ROLES.ADMIN,
@@ -51,9 +44,6 @@ export const ROLE_GROUPS = {
     ]
 } as const;
 
-/**
- * User profile interface for authenticated users
- */
 export interface UserProfile {
     username: string;
     email: string;

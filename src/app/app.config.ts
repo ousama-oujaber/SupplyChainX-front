@@ -9,10 +9,6 @@ import { authInterceptor } from './interceptors/auth.interceptor';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { environment } from '../environments/environment';
 
-/**
- * Initialize Keycloak before the application starts.
- * If Keycloak is unavailable, the app will still load but without authentication.
- */
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
     keycloak.init({
