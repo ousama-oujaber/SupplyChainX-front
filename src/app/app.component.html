@@ -91,7 +91,7 @@
   </ng-container>
 
   <!-- Public Pages (Login, Access Denied) - Full screen without layout -->
-  <div *ngIf="!showLayout" class="flex-1 relative z-10">
+  <div *ngIf="!showLayout" class="flex-1 relative z-10 overflow-y-auto">
     <router-outlet></router-outlet>
   </div>
 </div>
