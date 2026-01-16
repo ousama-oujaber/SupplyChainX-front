@@ -41,7 +41,7 @@ import { SupplyOrder } from '../../models/models';
                 <div class="col-12 md:col-4">
                     <div class="info-box">
                         <span class="label">Total Items</span>
-                        <span class="value">{{ order.items?.length || 0 }}</span>
+                        <span class="value">{{ order.items.length || 0 }}</span>
                     </div>
                 </div>
             </div>
