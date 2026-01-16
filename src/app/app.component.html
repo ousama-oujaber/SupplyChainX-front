@@ -1,5 +1,5 @@
 <div
-  class="flex h-screen bg-[#020617] text-white overflow-hidden relative selection:bg-primary-500 selection:text-white">
+  [class]="showLayout ? 'flex h-screen bg-[#020617] text-white overflow-hidden relative selection:bg-primary-500 selection:text-white' : 'min-h-screen bg-[#020617] text-white relative selection:bg-primary-500 selection:text-white'">
 
   <!-- Ambient Background Glow -->
   <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none z-0">
@@ -91,7 +91,7 @@
   </ng-container>
 
   <!-- Public Pages (Login, Access Denied) - Full screen without layout -->
-  <div *ngIf="!showLayout" class="flex-1 relative z-10 overflow-y-auto">
+  <div *ngIf="!showLayout" class="relative z-10">
     <router-outlet></router-outlet>
   </div>
 </div>
