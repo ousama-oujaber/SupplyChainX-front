@@ -1224,3 +1224,390 @@ input:focus,
         width: 100%;
     }
 }
+
+/* ========================================
+   ENTERPRISE FORM STYLES
+   ======================================== */
+
+/* Form Page Container */
+.form-page {
+    padding: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+/* Form Card */
+.form-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Form Header */
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(168, 85, 247, 0.05));
+}
+
+.form-header-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+}
+
+.form-header-icon.blue {
+    background: rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
+}
+
+.form-header-icon.green {
+    background: rgba(74, 222, 128, 0.2);
+    color: #4ade80;
+}
+
+.form-header-icon.purple {
+    background: rgba(168, 85, 247, 0.2);
+    color: #a78bfa;
+}
+
+.form-header-icon.amber {
+    background: rgba(251, 191, 36, 0.2);
+    color: #fbbf24;
+}
+
+.form-header-icon.cyan {
+    background: rgba(6, 182, 212, 0.2);
+    color: #22d3ee;
+}
+
+.form-header-icon.red {
+    background: rgba(248, 113, 113, 0.2);
+    color: #f87171;
+}
+
+.form-header-content h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #f1f5f9;
+    margin: 0 0 0.25rem 0;
+}
+
+.form-header-content p {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin: 0;
+}
+
+/* Form Body */
+.form-body {
+    padding: 2rem;
+}
+
+/* Form Section */
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.form-section:last-child {
+    margin-bottom: 0;
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.form-section-title i {
+    font-size: 0.9rem;
+    opacity: 0.7;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.form-grid.cols-1 {
+    grid-template-columns: 1fr;
+}
+
+.form-grid.cols-3 {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 768px) {
+
+    .form-grid,
+    .form-grid.cols-3 {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Form Field */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-field.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-field label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-field label .required {
+    color: #f87171;
+}
+
+/* Enhanced Input Styles */
+.form-input {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: #f1f5f9;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: rgba(96, 165, 250, 0.5);
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+}
+
+.form-input::placeholder {
+    color: #475569;
+}
+
+/* PrimeNG Input Overrides for Forms */
+.form-field .p-inputtext,
+.form-field .p-dropdown,
+.form-field .p-inputnumber,
+.form-field .p-calendar,
+.form-field .p-multiselect {
+    width: 100%;
+    background: rgba(15, 23, 42, 0.6) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 0.5rem !important;
+    color: #f1f5f9 !important;
+}
+
+.form-field .p-inputtext:focus,
+.form-field .p-dropdown:focus,
+.form-field .p-inputnumber-input:focus {
+    border-color: rgba(96, 165, 250, 0.5) !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15) !important;
+}
+
+/* Input Group */
+.input-group {
+    display: flex;
+    align-items: stretch;
+}
+
+.input-group-addon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 1rem;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: none;
+    border-radius: 0.5rem 0 0 0.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.input-group .form-input {
+    border-radius: 0 0.5rem 0.5rem 0;
+}
+
+/* Form Actions */
+.form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: rgba(15, 23, 42, 0.3);
+}
+
+.form-actions .btn-cancel {
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 0.5rem;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-actions .btn-cancel:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: #e2e8f0;
+}
+
+.form-actions .btn-save {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-actions .btn-save:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+}
+
+.form-actions .btn-save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Form Feedback */
+.form-error {
+    font-size: 0.75rem;
+    color: #f87171;
+    margin-top: 0.25rem;
+}
+
+.form-hint {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.25rem;
+}
+
+/* Rating Component Enhancement */
+.form-field .p-rating {
+    margin-top: 0.5rem;
+}
+
+.form-field .p-rating .p-rating-item .p-rating-icon {
+    color: #475569;
+}
+
+.form-field .p-rating .p-rating-item.p-rating-item-active .p-rating-icon {
+    color: #fbbf24;
+}
+
+/* Checkbox & Switch Enhancement */
+.form-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.form-checkbox:hover {
+    background: rgba(15, 23, 42, 0.6);
+}
+
+.form-checkbox-label {
+    font-size: 0.9rem;
+    color: #e2e8f0;
+}
+
+.form-checkbox-hint {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-top: 0.125rem;
+}
+
+/* Info Box */
+.form-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: rgba(59, 130, 246, 0.1);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-info i {
+    color: #60a5fa;
+    margin-top: 0.125rem;
+}
+
+.form-info-content {
+    font-size: 0.85rem;
+    color: #94a3b8;
+    line-height: 1.5;
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+    .form-page {
+        padding: 1rem;
+    }
+
+    .form-header {
+        padding: 1rem 1.25rem;
+    }
+
+    .form-body {
+        padding: 1.25rem;
+    }
+
+    .form-actions {
+        flex-direction: column-reverse;
+        padding: 1.25rem;
+    }
+
+    .form-actions .btn-cancel,
+    .form-actions .btn-save {
+        width: 100%;
+        justify-content: center;
+    }
+}

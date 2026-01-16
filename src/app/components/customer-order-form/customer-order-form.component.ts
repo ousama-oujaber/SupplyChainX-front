@@ -28,51 +28,84 @@ import { CustomerOrder, Customer, Product } from '../../models/models';
     ],
     providers: [MessageService],
     template: `
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Order' : 'Create Customer Order' }}</h2>
-            
-            <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-                <div class="grid">
-                    <div class="col-12 md:col-6 field">
-                        <label for="customerId" class="block mb-2">Customer *</label>
-                        <p-dropdown id="customerId" formControlName="customerId" [options]="customers"
-                                    optionLabel="name" optionValue="idCustomer" placeholder="Select Customer"
-                                    styleClass="w-full"></p-dropdown>
+        <div class="form-page">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="form-header-icon amber">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="productId" class="block mb-2">Product *</label>
-                        <p-dropdown id="productId" formControlName="productId" [options]="products"
-                                    optionLabel="name" optionValue="idProduct" placeholder="Select Product"
-                                    styleClass="w-full"></p-dropdown>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="quantity" class="block mb-2">Quantity *</label>
-                        <p-inputNumber id="quantity" formControlName="quantity" [min]="1" styleClass="w-full"></p-inputNumber>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="status" class="block mb-2">Status *</label>
-                        <p-dropdown id="status" formControlName="status" [options]="statusOptions"
-                                    styleClass="w-full"></p-dropdown>
+                    <div class="form-header-content">
+                        <h1>{{ isEditMode ? 'Edit Order' : 'Create Customer Order' }}</h1>
+                        <p>{{ isEditMode ? 'Update order details' : 'Create a new customer order' }}</p>
                     </div>
                 </div>
-                
-                <div class="flex gap-2 mt-4">
-                    <button pButton type="submit" label="Save" icon="pi pi-check" [disabled]="orderForm.invalid"></button>
-                    <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" routerLink="/customer-orders"></button>
-                </div>
-            </form>
+
+                <!-- Form Body -->
+                <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+                    <div class="form-body">
+                        
+                        <!-- Order Details Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-info-circle"></i>
+                                Order Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="customerId">Customer <span class="required">*</span></label>
+                                    <p-dropdown id="customerId" formControlName="customerId" [options]="customers"
+                                                optionLabel="name" optionValue="idCustomer" placeholder="Select customer"
+                                                [filter]="true" filterBy="name"></p-dropdown>
+                                </div>
+                                <div class="form-field">
+                                    <label for="productId">Product <span class="required">*</span></label>
+                                    <p-dropdown id="productId" formControlName="productId" [options]="products"
+                                                optionLabel="name" optionValue="idProduct" placeholder="Select product"
+                                                [filter]="true" filterBy="name"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quantity & Status Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-sliders-h"></i>
+                                Quantity & Status
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="quantity">Quantity <span class="required">*</span></label>
+                                    <p-inputNumber id="quantity" formControlName="quantity" [min]="1" 
+                                                   [showButtons]="true" placeholder="1"></p-inputNumber>
+                                </div>
+                                <div class="form-field">
+                                    <label for="status">Order Status <span class="required">*</span></label>
+                                    <p-dropdown id="status" formControlName="status" [options]="statusOptions"
+                                                placeholder="Select status"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" routerLink="/customer-orders">
+                            <i class="pi pi-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save" [disabled]="orderForm.invalid">
+                            <i class="pi pi-check"></i>
+                            {{ isEditMode ? 'Update Order' : 'Create Order' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
         <p-toast></p-toast>
     `,
-    styles: [`
-        :host { display: block; padding: 2rem; }
-        .card { background: var(--surface-card); border-radius: 12px; padding: 1.5rem; max-width: 800px; }
-        .field { margin-bottom: 1rem; }
-    `]
+    styles: [`:host { display: block; }`]
 })
 export class CustomerOrderFormComponent implements OnInit {
     orderForm!: FormGroup;

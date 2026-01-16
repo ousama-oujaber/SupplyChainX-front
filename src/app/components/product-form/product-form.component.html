@@ -1,25 +1,93 @@
-<div class="container">
-    <h2>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h2>
-    <form (ngSubmit)="onSubmit()">
-        <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" id="name" [(ngModel)]="product.name" name="name" required>
-        </div>
-        <div class="form-group">
-            <label for="productionTime">Production Time (hours)</label>
-            <input type="number" id="productionTime" [(ngModel)]="product.productionTime" name="productionTime"
-                required>
-        </div>
-        <div class="form-group">
-            <label for="cost">Cost</label>
-            <input type="number" id="cost" [(ngModel)]="product.cost" name="cost" required>
-        </div>
-        <div class="form-group">
-            <label for="stock">Stock</label>
-            <input type="number" id="stock" [(ngModel)]="product.stock" name="stock" required>
+<div class="form-page">
+    <div class="form-card">
+        <!-- Header -->
+        <div class="form-header">
+            <div class="form-header-icon blue">
+                <i class="pi pi-box"></i>
+            </div>
+            <div class="form-header-content">
+                <h1>{{ isEditMode ? 'Edit Product' : 'Add New Product' }}</h1>
+                <p>{{ isEditMode ? 'Update product details' : 'Add a new product to catalog' }}</p>
+            </div>
         </div>
 
-        <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
-        <button type="button" class="cancel" (click)="onCancel()">Cancel</button>
-    </form>
+        <!-- Form Body -->
+        <form (ngSubmit)="onSubmit()" #productForm="ngForm">
+            <div class="form-body">
+
+                <!-- Product Information Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-info-circle"></i>
+                        Product Information
+                    </div>
+                    <div class="form-grid cols-1">
+                        <div class="form-field">
+                            <label for="name">Product Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="name" name="name" [(ngModel)]="product.name"
+                                required placeholder="Enter product name">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Production Details Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-cog"></i>
+                        Production Details
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="productionTime">Production Time <span class="required">*</span></label>
+                            <div class="input-group">
+                                <input type="number" class="form-input" id="productionTime" name="productionTime"
+                                    [(ngModel)]="product.productionTime" required min="0" placeholder="0">
+                                <span class="input-group-addon"
+                                    style="border-left: none; border-right: 1px solid rgba(255,255,255,0.1); border-radius: 0 0.5rem 0.5rem 0;">hrs</span>
+                            </div>
+                            <span class="form-hint">Time to manufacture one unit</span>
+                        </div>
+                        <div class="form-field">
+                            <label for="cost">Unit Cost <span class="required">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-addon">$</span>
+                                <input type="number" class="form-input" id="cost" name="cost" [(ngModel)]="product.cost"
+                                    required min="0" step="0.01" placeholder="0.00">
+                            </div>
+                            <span class="form-hint">Manufacturing cost per unit</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inventory Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-chart-bar"></i>
+                        Inventory
+                    </div>
+                    <div class="form-grid cols-1">
+                        <div class="form-field" style="max-width: 300px;">
+                            <label for="stock">Current Stock <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="stock" name="stock" [(ngModel)]="product.stock"
+                                required min="0" placeholder="0">
+                            <span class="form-hint">Available units in inventory</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" (click)="onCancel()">
+                    <i class="pi pi-times"></i>
+                    Cancel
+                </button>
+                <button type="submit" class="btn-save" [disabled]="!productForm.valid">
+                    <i class="pi pi-check"></i>
+                    {{ isEditMode ? 'Update Product' : 'Create Product' }}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

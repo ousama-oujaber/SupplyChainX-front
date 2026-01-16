@@ -26,49 +26,85 @@ import { RawMaterial } from '../../models/models';
     ],
     providers: [MessageService],
     template: `
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Material' : 'Add New Material' }}</h2>
-            
-            <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
-                <div class="grid">
-                    <div class="col-12 md:col-6 field">
-                        <label for="name" class="block mb-2">Name *</label>
-                        <input pInputText id="name" formControlName="name" class="w-full" />
-                        <small class="p-error" *ngIf="materialForm.get('name')?.invalid && materialForm.get('name')?.touched">
-                            Name is required
-                        </small>
+        <div class="form-page">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="form-header-icon green">
+                        <i class="pi pi-box"></i>
                     </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="unit" class="block mb-2">Unit *</label>
-                        <input pInputText id="unit" formControlName="unit" class="w-full" placeholder="e.g., kg, pcs, liters" />
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="stock" class="block mb-2">Current Stock *</label>
-                        <p-inputNumber id="stock" formControlName="stock" [min]="0" styleClass="w-full"></p-inputNumber>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="stockMin" class="block mb-2">Minimum Stock *</label>
-                        <p-inputNumber id="stockMin" formControlName="stockMin" [min]="0" styleClass="w-full"></p-inputNumber>
+                    <div class="form-header-content">
+                        <h1>{{ isEditMode ? 'Edit Material' : 'Add New Material' }}</h1>
+                        <p>{{ isEditMode ? 'Update material details' : 'Add a new raw material to inventory' }}</p>
                     </div>
                 </div>
-                
-                <div class="flex gap-2 mt-4">
-                    <button pButton type="submit" label="Save" icon="pi pi-check" [disabled]="materialForm.invalid"></button>
-                    <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" routerLink="/raw-materials"></button>
-                </div>
-            </form>
+
+                <!-- Form Body -->
+                <form [formGroup]="materialForm" (ngSubmit)="onSubmit()">
+                    <div class="form-body">
+                        
+                        <!-- Material Details Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-info-circle"></i>
+                                Material Details
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="name">Material Name <span class="required">*</span></label>
+                                    <input pInputText id="name" formControlName="name" placeholder="Enter material name">
+                                    <span class="form-error" *ngIf="materialForm.get('name')?.invalid && materialForm.get('name')?.touched">
+                                        Name is required
+                                    </span>
+                                </div>
+                                <div class="form-field">
+                                    <label for="unit">Unit of Measure <span class="required">*</span></label>
+                                    <input pInputText id="unit" formControlName="unit" placeholder="e.g., kg, pcs, liters">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Stock Information Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-chart-bar"></i>
+                                Stock Information
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="stock">Current Stock <span class="required">*</span></label>
+                                    <p-inputNumber id="stock" formControlName="stock" [min]="0" 
+                                                   [showButtons]="true" placeholder="0"></p-inputNumber>
+                                    <span class="form-hint">Available quantity in inventory</span>
+                                </div>
+                                <div class="form-field">
+                                    <label for="stockMin">Minimum Stock Level <span class="required">*</span></label>
+                                    <p-inputNumber id="stockMin" formControlName="stockMin" [min]="0" 
+                                                   [showButtons]="true" placeholder="0"></p-inputNumber>
+                                    <span class="form-hint">Alert when stock falls below this level</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" routerLink="/raw-materials">
+                            <i class="pi pi-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save" [disabled]="materialForm.invalid">
+                            <i class="pi pi-check"></i>
+                            {{ isEditMode ? 'Update Material' : 'Add Material' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
         <p-toast></p-toast>
     `,
-    styles: [`
-        :host { display: block; padding: 2rem; }
-        .card { background: var(--surface-card); border-radius: 12px; padding: 1.5rem; max-width: 800px; }
-        .field { margin-bottom: 1rem; }
-    `]
+    styles: [`:host { display: block; }`]
 })
 export class RawMaterialFormComponent implements OnInit {
     materialForm!: FormGroup;

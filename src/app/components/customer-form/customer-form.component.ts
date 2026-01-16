@@ -24,50 +24,83 @@ import { Customer } from '../../models/models';
     ],
     providers: [MessageService],
     template: `
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Customer' : 'Add New Customer' }}</h2>
-            
-            <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
-                <div class="grid">
-                    <div class="col-12 field">
-                        <label for="name" class="block mb-2">Name *</label>
-                        <input pInputText id="name" formControlName="name" class="w-full" />
-                        <small class="p-error" *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
-                            Name is required
-                        </small>
+        <div class="form-page">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="form-header-icon amber">
+                        <i class="pi pi-users"></i>
                     </div>
-                    
-                    <div class="col-12 md:col-8 field">
-                        <label for="address" class="block mb-2">Address *</label>
-                        <input pInputText id="address" formControlName="address" class="w-full" />
-                        <small class="p-error" *ngIf="customerForm.get('address')?.invalid && customerForm.get('address')?.touched">
-                            Address is required
-                        </small>
-                    </div>
-                    
-                    <div class="col-12 md:col-4 field">
-                        <label for="city" class="block mb-2">City *</label>
-                        <input pInputText id="city" formControlName="city" class="w-full" />
-                        <small class="p-error" *ngIf="customerForm.get('city')?.invalid && customerForm.get('city')?.touched">
-                            City is required
-                        </small>
+                    <div class="form-header-content">
+                        <h1>{{ isEditMode ? 'Edit Customer' : 'Add New Customer' }}</h1>
+                        <p>{{ isEditMode ? 'Update customer information' : 'Register a new customer account' }}</p>
                     </div>
                 </div>
-                
-                <div class="flex gap-2 mt-4">
-                    <button pButton type="submit" label="Save" icon="pi pi-check" [disabled]="customerForm.invalid"></button>
-                    <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" routerLink="/customers"></button>
-                </div>
-            </form>
+
+                <!-- Form Body -->
+                <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+                    <div class="form-body">
+                        
+                        <!-- Customer Information Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-user"></i>
+                                Customer Information
+                            </div>
+                            <div class="form-grid cols-1">
+                                <div class="form-field">
+                                    <label for="name">Customer Name <span class="required">*</span></label>
+                                    <input pInputText id="name" formControlName="name" placeholder="Enter customer name">
+                                    <span class="form-error" *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
+                                        Name is required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Location Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-map-marker"></i>
+                                Location
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field full-width">
+                                    <label for="address">Address <span class="required">*</span></label>
+                                    <input pInputText id="address" formControlName="address" placeholder="Street address">
+                                    <span class="form-error" *ngIf="customerForm.get('address')?.invalid && customerForm.get('address')?.touched">
+                                        Address is required
+                                    </span>
+                                </div>
+                                <div class="form-field">
+                                    <label for="city">City <span class="required">*</span></label>
+                                    <input pInputText id="city" formControlName="city" placeholder="City name">
+                                    <span class="form-error" *ngIf="customerForm.get('city')?.invalid && customerForm.get('city')?.touched">
+                                        City is required
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" routerLink="/customers">
+                            <i class="pi pi-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save" [disabled]="customerForm.invalid">
+                            <i class="pi pi-check"></i>
+                            {{ isEditMode ? 'Update Customer' : 'Add Customer' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
         <p-toast></p-toast>
     `,
-    styles: [`
-        :host { display: block; padding: 2rem; }
-        .card { background: var(--surface-card); border-radius: 12px; padding: 1.5rem; max-width: 800px; }
-        .field { margin-bottom: 1rem; }
-    `]
+    styles: [`:host { display: block; }`]
 })
 export class CustomerFormComponent implements OnInit {
     customerForm!: FormGroup;

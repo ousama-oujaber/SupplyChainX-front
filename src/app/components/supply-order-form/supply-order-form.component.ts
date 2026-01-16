@@ -33,75 +33,124 @@ import { Supplier } from '../../models/supplier.model';
     ],
     providers: [MessageService],
     template: `
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Supply Order' : 'Create Supply Order' }}</h2>
-            
-            <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-                <div class="grid">
-                    <div class="col-12 md:col-6 field">
-                        <label for="supplierId" class="block mb-2">Supplier *</label>
-                        <p-dropdown id="supplierId" formControlName="supplierId" [options]="suppliers"
-                                    optionLabel="name" optionValue="idSupplier" placeholder="Select Supplier"
-                                    styleClass="w-full"></p-dropdown>
+        <div class="form-page" style="max-width: 1000px;">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="form-header-icon blue">
+                        <i class="pi pi-shopping-cart"></i>
                     </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="status" class="block mb-2">Status *</label>
-                        <p-dropdown id="status" formControlName="status" [options]="statusOptions"
-                                    styleClass="w-full"></p-dropdown>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="orderDate" class="block mb-2">Order Date *</label>
-                        <p-calendar id="orderDate" formControlName="orderDate" dateFormat="yy-mm-dd"
-                                    styleClass="w-full"></p-calendar>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="expectedDeliveryDate" class="block mb-2">Expected Delivery *</label>
-                        <p-calendar id="expectedDeliveryDate" formControlName="expectedDeliveryDate" 
-                                    dateFormat="yy-mm-dd" [minDate]="minDeliveryDate" styleClass="w-full"></p-calendar>
+                    <div class="form-header-content">
+                        <h1>{{ isEditMode ? 'Edit Supply Order' : 'Create Supply Order' }}</h1>
+                        <p>{{ isEditMode ? 'Update order details' : 'Create a new procurement order' }}</p>
                     </div>
                 </div>
-                
-                <h3 class="mt-4 mb-3">Order Items</h3>
-                <div formArrayName="items">
-                    <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" class="grid surface-ground border-round p-3 mb-2">
-                        <div class="col-12 md:col-4 field">
-                            <label class="block mb-2">Material</label>
-                            <p-dropdown formControlName="materialId" [options]="materials"
-                                        optionLabel="name" optionValue="idMaterial" placeholder="Select Material"
-                                        styleClass="w-full"></p-dropdown>
+
+                <!-- Form Body -->
+                <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+                    <div class="form-body">
+                        
+                        <!-- Supplier & Status Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-building"></i>
+                                Supplier & Status
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="supplierId">Supplier <span class="required">*</span></label>
+                                    <p-dropdown id="supplierId" formControlName="supplierId" [options]="suppliers"
+                                                optionLabel="name" optionValue="idSupplier" placeholder="Select supplier"
+                                                [filter]="true" filterBy="name"></p-dropdown>
+                                </div>
+                                <div class="form-field">
+                                    <label for="status">Order Status <span class="required">*</span></label>
+                                    <p-dropdown id="status" formControlName="status" [options]="statusOptions"
+                                                placeholder="Select status"></p-dropdown>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 md:col-3 field">
-                            <label class="block mb-2">Quantity</label>
-                            <p-inputNumber formControlName="quantity" [min]="1" styleClass="w-full"></p-inputNumber>
+
+                        <!-- Dates Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-calendar"></i>
+                                Schedule
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="orderDate">Order Date <span class="required">*</span></label>
+                                    <p-calendar id="orderDate" formControlName="orderDate" dateFormat="yy-mm-dd"
+                                                [showIcon]="true" placeholder="Select date"></p-calendar>
+                                </div>
+                                <div class="form-field">
+                                    <label for="expectedDeliveryDate">Expected Delivery <span class="required">*</span></label>
+                                    <p-calendar id="expectedDeliveryDate" formControlName="expectedDeliveryDate" 
+                                                dateFormat="yy-mm-dd" [minDate]="minDeliveryDate" 
+                                                [showIcon]="true" placeholder="Select date"></p-calendar>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-12 md:col-3 field">
-                            <label class="block mb-2">Unit Price</label>
-                            <p-inputNumber formControlName="unitPrice" [min]="0" mode="currency" currency="USD" styleClass="w-full"></p-inputNumber>
+
+                        <!-- Order Items Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-list"></i>
+                                Order Items
+                            </div>
+                            
+                            <div formArrayName="items">
+                                <div *ngFor="let item of items.controls; let i = index" [formGroupName]="i" 
+                                     style="background: rgba(15, 23, 42, 0.4); border: 1px solid rgba(255,255,255,0.05); border-radius: 0.5rem; padding: 1rem; margin-bottom: 0.75rem;">
+                                    <div class="form-grid cols-3" style="gap: 1rem; align-items: end;">
+                                        <div class="form-field">
+                                            <label>Material <span class="required">*</span></label>
+                                            <p-dropdown formControlName="materialId" [options]="materials"
+                                                        optionLabel="name" optionValue="idMaterial" 
+                                                        placeholder="Select material" [filter]="true"></p-dropdown>
+                                        </div>
+                                        <div class="form-field">
+                                            <label>Quantity <span class="required">*</span></label>
+                                            <p-inputNumber formControlName="quantity" [min]="1" [showButtons]="true"></p-inputNumber>
+                                        </div>
+                                        <div class="form-field">
+                                            <label>Unit Price <span class="required">*</span></label>
+                                            <p-inputNumber formControlName="unitPrice" [min]="0" mode="currency" currency="USD"></p-inputNumber>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: flex-end; margin-top: 0.5rem;">
+                                        <button type="button" class="row-action delete" (click)="removeItem(i)" title="Remove">
+                                            <i class="pi pi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button type="button" class="btn-secondary" style="margin-top: 0.5rem;" (click)="addItem()">
+                                <i class="pi pi-plus"></i>
+                                Add Item
+                            </button>
                         </div>
-                        <div class="col-12 md:col-2 flex align-items-end">
-                            <button pButton type="button" icon="pi pi-trash" class="p-button-danger" (click)="removeItem(i)"></button>
-                        </div>
+
                     </div>
-                </div>
-                <button pButton type="button" label="Add Item" icon="pi pi-plus" class="p-button-outlined mb-4" (click)="addItem()"></button>
-                
-                <div class="flex gap-2 mt-4">
-                    <button pButton type="submit" label="Save" icon="pi pi-check" [disabled]="orderForm.invalid"></button>
-                    <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" routerLink="/supply-orders"></button>
-                </div>
-            </form>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" routerLink="/supply-orders">
+                            <i class="pi pi-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save" [disabled]="orderForm.invalid">
+                            <i class="pi pi-check"></i>
+                            {{ isEditMode ? 'Update Order' : 'Create Order' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
         <p-toast></p-toast>
     `,
-    styles: [`
-        :host { display: block; padding: 2rem; }
-        .card { background: var(--surface-card); border-radius: 12px; padding: 1.5rem; max-width: 1000px; }
-        .field { margin-bottom: 1rem; }
-    `]
+    styles: [`:host { display: block; }`]
 })
 export class SupplyOrderFormComponent implements OnInit {
     orderForm!: FormGroup;

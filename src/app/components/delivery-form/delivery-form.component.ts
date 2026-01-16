@@ -31,67 +31,108 @@ import { Delivery, CustomerOrder } from '../../models/models';
     ],
     providers: [MessageService],
     template: `
-        <div class="card">
-            <h2 class="text-2xl font-bold mb-4">{{ isEditMode ? 'Edit Delivery' : 'Schedule New Delivery' }}</h2>
-            
-            <form [formGroup]="deliveryForm" (ngSubmit)="onSubmit()">
-                <div class="grid">
-                    <div class="col-12 md:col-6 field">
-                        <label for="orderId" class="block mb-2">Customer Order *</label>
-                        <p-dropdown id="orderId" formControlName="orderId" [options]="orders"
-                                    optionValue="idOrder" placeholder="Select Order"
-                                    styleClass="w-full">
-                            <ng-template let-order pTemplate="item">
-                                #{{ order.idOrder }} - {{ order.customerName }} ({{ order.productName }})
-                            </ng-template>
-                            <ng-template let-order pTemplate="selectedItem">
-                                #{{ order.idOrder }} - {{ order.customerName }}
-                            </ng-template>
-                        </p-dropdown>
+        <div class="form-page">
+            <div class="form-card">
+                <!-- Header -->
+                <div class="form-header">
+                    <div class="form-header-icon cyan">
+                        <i class="pi pi-truck"></i>
                     </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="status" class="block mb-2">Status *</label>
-                        <p-dropdown id="status" formControlName="status" [options]="statusOptions"
-                                    styleClass="w-full"></p-dropdown>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="vehicle" class="block mb-2">Vehicle *</label>
-                        <input pInputText id="vehicle" formControlName="vehicle" class="w-full" placeholder="e.g., Van-001" />
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="driver" class="block mb-2">Driver *</label>
-                        <input pInputText id="driver" formControlName="driver" class="w-full" />
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="deliveryDate" class="block mb-2">Delivery Date *</label>
-                        <p-calendar id="deliveryDate" formControlName="deliveryDate" dateFormat="yy-mm-dd"
-                                    styleClass="w-full"></p-calendar>
-                    </div>
-                    
-                    <div class="col-12 md:col-6 field">
-                        <label for="cost" class="block mb-2">Cost</label>
-                        <p-inputNumber id="cost" formControlName="cost" [min]="0" mode="currency" currency="USD" styleClass="w-full"></p-inputNumber>
+                    <div class="form-header-content">
+                        <h1>{{ isEditMode ? 'Edit Delivery' : 'Schedule New Delivery' }}</h1>
+                        <p>{{ isEditMode ? 'Update delivery details' : 'Schedule a new delivery for a customer order' }}</p>
                     </div>
                 </div>
-                
-                <div class="flex gap-2 mt-4">
-                    <button pButton type="submit" label="Save" icon="pi pi-check" [disabled]="deliveryForm.invalid"></button>
-                    <button pButton type="button" label="Cancel" icon="pi pi-times" class="p-button-secondary" routerLink="/deliveries"></button>
-                </div>
-            </form>
+
+                <!-- Form Body -->
+                <form [formGroup]="deliveryForm" (ngSubmit)="onSubmit()">
+                    <div class="form-body">
+                        
+                        <!-- Order & Status Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-shopping-cart"></i>
+                                Order & Status
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="orderId">Customer Order <span class="required">*</span></label>
+                                    <p-dropdown id="orderId" formControlName="orderId" [options]="orders"
+                                                optionValue="idOrder" placeholder="Select order" [filter]="true">
+                                        <ng-template let-order pTemplate="item">
+                                            #{{ order.idOrder }} - {{ order.customerName }} ({{ order.productName }})
+                                        </ng-template>
+                                        <ng-template let-order pTemplate="selectedItem">
+                                            #{{ order.idOrder }} - {{ order.customerName }}
+                                        </ng-template>
+                                    </p-dropdown>
+                                </div>
+                                <div class="form-field">
+                                    <label for="status">Delivery Status <span class="required">*</span></label>
+                                    <p-dropdown id="status" formControlName="status" [options]="statusOptions"
+                                                placeholder="Select status"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Logistics Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-car"></i>
+                                Logistics
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="vehicle">Vehicle <span class="required">*</span></label>
+                                    <input pInputText id="vehicle" formControlName="vehicle" placeholder="e.g., Van-001">
+                                </div>
+                                <div class="form-field">
+                                    <label for="driver">Driver <span class="required">*</span></label>
+                                    <input pInputText id="driver" formControlName="driver" placeholder="Driver name">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Schedule & Cost Section -->
+                        <div class="form-section">
+                            <div class="form-section-title">
+                                <i class="pi pi-calendar"></i>
+                                Schedule & Cost
+                            </div>
+                            <div class="form-grid">
+                                <div class="form-field">
+                                    <label for="deliveryDate">Delivery Date <span class="required">*</span></label>
+                                    <p-calendar id="deliveryDate" formControlName="deliveryDate" dateFormat="yy-mm-dd"
+                                                [showIcon]="true" placeholder="Select date"></p-calendar>
+                                </div>
+                                <div class="form-field">
+                                    <label for="cost">Delivery Cost</label>
+                                    <p-inputNumber id="cost" formControlName="cost" [min]="0" mode="currency" 
+                                                   currency="USD" placeholder="0.00"></p-inputNumber>
+                                    <span class="form-hint">Optional delivery fee</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" routerLink="/deliveries">
+                            <i class="pi pi-times"></i>
+                            Cancel
+                        </button>
+                        <button type="submit" class="btn-save" [disabled]="deliveryForm.invalid">
+                            <i class="pi pi-check"></i>
+                            {{ isEditMode ? 'Update Delivery' : 'Schedule Delivery' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-        
         <p-toast></p-toast>
     `,
-    styles: [`
-        :host { display: block; padding: 2rem; }
-        .card { background: var(--surface-card); border-radius: 12px; padding: 1.5rem; max-width: 900px; }
-        .field { margin-bottom: 1rem; }
-    `]
+    styles: [`:host { display: block; }`]
 })
 export class DeliveryFormComponent implements OnInit {
     deliveryForm!: FormGroup;

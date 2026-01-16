@@ -1,37 +1,102 @@
-<div class="container">
-    <h2>{{ isEditMode ? 'Edit Production Order' : 'Create Production Order' }}</h2>
-    <form (ngSubmit)="onSubmit()">
-
-        <div class="form-group">
-            <label for="productName">Product Name</label>
-            <input type="text" id="productName" [(ngModel)]="order.productName" name="productName" required>
-        </div>
-        <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="number" id="quantity" [(ngModel)]="order.quantity" name="quantity" required>
-        </div>
-        <div class="form-group">
-            <label for="status">Status</label>
-            <select id="status" [(ngModel)]="order.status" name="status" required>
-                <option value="EN_ATTENTE">En Attente</option>
-                <option value="EN_PRODUCTION">En Production</option>
-                <option value="TERMINE">Terminé</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="startDate">Start Date</label>
-            <input type="date" id="startDate" [(ngModel)]="order.startDate" name="startDate" required>
-        </div>
-        <div class="form-group">
-            <label for="endDate">End Date</label>
-            <input type="date" id="endDate" [(ngModel)]="order.endDate" name="endDate" required>
-        </div>
-        <div class="form-group">
-            <label for="isPriority">Priority</label>
-            <input type="checkbox" id="isPriority" [(ngModel)]="order.isPriority" name="isPriority">
+<div class="form-page">
+    <div class="form-card">
+        <!-- Header -->
+        <div class="form-header">
+            <div class="form-header-icon amber">
+                <i class="pi pi-cog"></i>
+            </div>
+            <div class="form-header-content">
+                <h1>{{ isEditMode ? 'Edit Production Order' : 'Create Production Order' }}</h1>
+                <p>{{ isEditMode ? 'Update order details' : 'Schedule a new production run' }}</p>
+            </div>
         </div>
 
-        <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
-        <button type="button" class="cancel" (click)="onCancel()">Cancel</button>
-    </form>
+        <!-- Form Body -->
+        <form (ngSubmit)="onSubmit()" #orderForm="ngForm">
+            <div class="form-body">
+
+                <!-- Product & Quantity Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-box"></i>
+                        Product Details
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="productName">Product Name <span class="required">*</span></label>
+                            <input type="text" class="form-input" id="productName" name="productName"
+                                [(ngModel)]="order.productName" required placeholder="Enter product name">
+                        </div>
+                        <div class="form-field">
+                            <label for="quantity">Quantity <span class="required">*</span></label>
+                            <input type="number" class="form-input" id="quantity" name="quantity"
+                                [(ngModel)]="order.quantity" required min="1" placeholder="0">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Status & Priority Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-sliders-h"></i>
+                        Status & Priority
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="status">Production Status <span class="required">*</span></label>
+                            <select class="form-input" id="status" name="status" [(ngModel)]="order.status" required>
+                                <option value="EN_ATTENTE">Pending</option>
+                                <option value="EN_PRODUCTION">In Production</option>
+                                <option value="TERMINE">Completed</option>
+                            </select>
+                        </div>
+                        <div class="form-field">
+                            <label>Priority Order</label>
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="isPriority" name="isPriority" [(ngModel)]="order.isPriority">
+                                <div>
+                                    <span class="form-checkbox-label">Mark as Priority</span>
+                                    <p class="form-checkbox-hint">Priority orders are processed first</p>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Schedule Section -->
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="pi pi-calendar"></i>
+                        Schedule
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-field">
+                            <label for="startDate">Start Date <span class="required">*</span></label>
+                            <input type="date" class="form-input" id="startDate" name="startDate"
+                                [(ngModel)]="order.startDate" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="endDate">End Date <span class="required">*</span></label>
+                            <input type="date" class="form-input" id="endDate" name="endDate"
+                                [(ngModel)]="order.endDate" required>
+                            <span class="form-hint">Expected completion date</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn-cancel" (click)="onCancel()">
+                    <i class="pi pi-times"></i>
+                    Cancel
+                </button>
+                <button type="submit" class="btn-save" [disabled]="!orderForm.valid">
+                    <i class="pi pi-check"></i>
+                    {{ isEditMode ? 'Update Order' : 'Create Order' }}
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
