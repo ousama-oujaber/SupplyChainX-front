@@ -1,21 +1,37 @@
-@keyframes pulse-slow {
+// Premium Landing Page Styles
 
-    0%,
-    100% {
-        opacity: 0.4;
-        transform: scale(1);
-    }
-
-    50% {
-        opacity: 0.2;
-        transform: scale(1.1);
-    }
+// Glass Effect
+.glass-effect {
+    background: rgba(15, 23, 42, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
 }
 
-@keyframes fade-in-up {
+// Gradient Text
+.gradient-text {
+    background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+// Scroll Reveal Animation
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+// Auto-activate reveal on load (for Angular)
+@keyframes revealAnimation {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
 
     to {
@@ -24,11 +40,39 @@
     }
 }
 
-.animate-pulse-slow {
-    animation: pulse-slow 8s infinite ease-in-out;
+.reveal {
+    animation: revealAnimation 0.8s cubic-bezier(0.5, 0, 0, 1) forwards;
+
+    @for $i from 1 through 10 {
+        &:nth-child(#{$i}) {
+            animation-delay: #{$i * 0.1}s;
+        }
+    }
 }
 
-.animate-fade-in-up {
-    opacity: 0;
-    animation: fade-in-up 0.8s ease-out forwards;
+// Custom Scrollbar
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+// Smooth animations for feature cards
+.group {
+    &:hover {
+        .pi {
+            transform: scale(1.1);
+        }
+    }
 }
