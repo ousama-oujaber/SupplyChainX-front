@@ -87,7 +87,3 @@ ng test
 # Lint
 ng lint
 ```
-
-## License
-
-MIT
