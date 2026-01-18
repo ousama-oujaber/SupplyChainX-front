@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MenuItem } from 'primeng/api';
-import { AuthService } from './services/auth.service';
-import { UserProfile } from './models/auth.models';
+import { AuthService } from './core/auth/auth.service';
+import { UserProfile } from './shared/models/auth.models';
 
 @Component({
   selector: 'app-root',

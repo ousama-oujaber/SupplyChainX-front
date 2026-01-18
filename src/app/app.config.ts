@@ -5,7 +5,7 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 import { KeycloakService } from 'keycloak-angular';
 
 import { routes } from './app.routes';
-import { authInterceptor } from './interceptors/auth.interceptor';
+import { authInterceptor } from './core/auth/auth.interceptor';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { environment } from '../environments/environment';
 
