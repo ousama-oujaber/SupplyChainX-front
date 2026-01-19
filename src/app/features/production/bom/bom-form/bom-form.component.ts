@@ -8,7 +8,7 @@ import { BillOfMaterial } from '../../../../shared/models/models';
 @Component({
     selector: 'app-bom-form',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule], 
     templateUrl: './bom-form.component.html',
     styles: [`
     .container { padding: 20px; max-width: 600px; margin: 0 auto; }

@@ -15,7 +15,7 @@ import { SupplyOrderService } from '../../services/supply-order.service';
 import { SupplyOrder } from '../../../../shared/models/models';
 
 @Component({
-    selector: 'app-supply-order-list',
+    selector: 'app-supply-order-list', 
     standalone: true,
     imports: [
         CommonModule, RouterModule, FormsModule, TableModule, ButtonModule, TagModule,
