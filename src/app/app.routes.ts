@@ -1,11 +1,4 @@
 import { Routes } from '@angular/router';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { ProductListComponent } from './features/production/products/product-list/product-list.component';
-import { ProductFormComponent } from './features/production/products/product-form/product-form.component';
-import { ProductionOrderListComponent } from './features/production/production-orders/production-order-list/production-order-list.component';
-import { ProductionOrderFormComponent } from './features/production/production-orders/production-order-form/production-order-form.component';
-import { BomListComponent } from './features/production/bom/bom-list/bom-list.component';
-import { BomFormComponent } from './features/production/bom/bom-form/bom-form.component';
 import { authGuard } from './core/auth/auth.guard';
 import { adminGuard, procurementGuard, productionGuard, deliveryGuard } from './core/auth/role.guard';
 
@@ -23,7 +16,7 @@ export const routes: Routes = [
     // Protected routes - Dashboard (accessible to all authenticated users)
     {
         path: 'dashboard',
-        component: DashboardComponent,
+        loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
         canActivate: [authGuard]
     },
 
@@ -47,47 +40,47 @@ export const routes: Routes = [
     // Production Module - Production roles + Admin
     {
         path: 'products',
-        component: ProductListComponent,
+        loadComponent: () => import('./features/production/products/product-list/product-list.component').then(m => m.ProductListComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'products/new',
-        component: ProductFormComponent,
+        loadComponent: () => import('./features/production/products/product-form/product-form.component').then(m => m.ProductFormComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'products/edit/:id',
-        component: ProductFormComponent,
+        loadComponent: () => import('./features/production/products/product-form/product-form.component').then(m => m.ProductFormComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'production-orders',
-        component: ProductionOrderListComponent,
+        loadComponent: () => import('./features/production/production-orders/production-order-list/production-order-list.component').then(m => m.ProductionOrderListComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'production-orders/new',
-        component: ProductionOrderFormComponent,
+        loadComponent: () => import('./features/production/production-orders/production-order-form/production-order-form.component').then(m => m.ProductionOrderFormComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'production-orders/edit/:id',
-        component: ProductionOrderFormComponent,
+        loadComponent: () => import('./features/production/production-orders/production-order-form/production-order-form.component').then(m => m.ProductionOrderFormComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'bom',
-        component: BomListComponent,
+        loadComponent: () => import('./features/production/bom/bom-list/bom-list.component').then(m => m.BomListComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'bom/new',
-        component: BomFormComponent,
+        loadComponent: () => import('./features/production/bom/bom-form/bom-form.component').then(m => m.BomFormComponent),
         canActivate: [productionGuard]
     },
     {
         path: 'bom/edit/:id',
-        component: BomFormComponent,
+        loadComponent: () => import('./features/production/bom/bom-form/bom-form.component').then(m => m.BomFormComponent),
         canActivate: [productionGuard]
     },
 
