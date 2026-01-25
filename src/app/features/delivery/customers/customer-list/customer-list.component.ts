@@ -2,15 +2,20 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { TableModule } from 'primeng/table';
+import { TableModule, TableLazyLoadEvent } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { InputTextModule } from 'primeng/inputtext';
-import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../../../shared/models/models';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { Customer } from '../models/customer.model';
+import * as CustomerActions from '../store/customer.actions';
+import * as CustomerSelectors from '../store/customer.selectors';
 
 @Component({
     selector: 'app-customer-list',
@@ -38,6 +43,8 @@ import { Customer } from '../../../../shared/models/models';
                         <i class="pi pi-plus"></i>
                         Add Customer
                     </button>
+                    <!-- Debug buttons if needed -->
+                    <!-- <button class="btn-secondary" (click)="reload()">Reload</button> -->
                 </div>
             </div>
 
@@ -48,28 +55,15 @@ import { Customer } from '../../../../shared/models/models';
                         <i class="pi pi-users"></i>
                     </div>
                     <div class="list-stat-content">
-                        <div class="list-stat-value">{{ customers.length }}</div>
-                        <div class="list-stat-label">Total Customers</div>
+                        <div class="list-stat-value">{{ (pagination$ | async)?.totalElements || 0 }}</div>
+                        <div class="list-stat-label">Total Elements</div>
                     </div>
                 </div>
-                <div class="list-stat">
-                    <div class="list-stat-icon" style="background: rgba(74, 222, 128, 0.15); color: #4ade80;">
-                        <i class="pi pi-check-circle"></i>
-                    </div>
-                    <div class="list-stat-content">
-                        <div class="list-stat-value">{{ customers.length }}</div>
-                        <div class="list-stat-label">Active</div>
-                    </div>
-                </div>
-                <div class="list-stat">
-                    <div class="list-stat-icon" style="background: rgba(96, 165, 250, 0.15); color: #60a5fa;">
-                        <i class="pi pi-map-marker"></i>
-                    </div>
-                    <div class="list-stat-content">
-                        <div class="list-stat-value">{{ getUniqueCities() }}</div>
-                        <div class="list-stat-label">Cities</div>
-                    </div>
-                </div>
+                <!-- Other stats could be derived from store or separate API calls. 
+                     For now, we remove "Active" and "Cities" or keep them if we can calculate them. 
+                     Since we only load one page, calculating unique cities for ALL customers is not possible client-side accurately without a specific stats endpoint. 
+                     We will hide them or show current page stats. 
+                     Let's hide them to be accurate, or keep placeholder. -->
             </div>
 
             <!-- Table Container -->
@@ -78,27 +72,35 @@ import { Customer } from '../../../../shared/models/models';
                     <div class="toolbar-left">
                         <div class="toolbar-search">
                             <i class="pi pi-search"></i>
-                            <input type="text" placeholder="Search customers..." 
-                                   (input)="dt.filterGlobal($any($event.target).value, 'contains')">
+                            <input type="text" pInputText placeholder="Search customers..." 
+                                   (input)="onSearch($event)">
                         </div>
                     </div>
                 </div>
 
-                <p-table #dt [value]="customers" [globalFilterFields]="['name', 'address', 'city']" 
-                         [paginator]="true" [rows]="10" styleClass="p-datatable-sm">
+                <p-table #dt 
+                         [value]="(customers$ | async) || []" 
+                         [lazy]="true"
+                         (onLazyLoad)="loadCustomers($event)"
+                         [paginator]="true" 
+                         [rows]="10" 
+                         [totalRecords]="(pagination$ | async)?.totalElements || 0"
+                         [loading]="(loading$ | async) || false"
+                         [rowsPerPageOptions]="[10, 20, 50]"
+                         styleClass="p-datatable-sm">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th style="width: 60px">ID</th>
-                            <th>Customer</th>
-                            <th>Address</th>
-                            <th style="width: 120px">City</th>
-                            <th style="width: 100px">Status</th>
+                            <th style="width: 60px" pSortableColumn="id">ID <p-sortIcon field="id"></p-sortIcon></th>
+                            <th pSortableColumn="name">Customer <p-sortIcon field="name"></p-sortIcon></th>
+                            <th pSortableColumn="address">Address <p-sortIcon field="address"></p-sortIcon></th>
+                            <th style="width: 150px" pSortableColumn="city">City <p-sortIcon field="city"></p-sortIcon></th>
+                            <th style="width: 100px">Orders</th>
                             <th style="width: 100px; text-align: center">Actions</th>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="body" let-customer>
                         <tr>
-                            <td class="text-slate-500">#{{ customer.idCustomer }}</td>
+                            <td class="text-slate-500">#{{ customer.id }}</td>
                             <td>
                                 <div class="flex items-center gap-3">
                                     <div class="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500/20 to-fuchsia-500/20 flex items-center justify-center text-violet-400 font-bold text-sm">
@@ -117,14 +119,11 @@ import { Customer } from '../../../../shared/models/models';
                                 <span class="status-pill info">{{ customer.city }}</span>
                             </td>
                             <td>
-                                <span class="status-pill success">
-                                    <span class="status-dot"></span>
-                                    Active
-                                </span>
+                                <span class="text-slate-400 text-sm">{{ customer.ordersCount || 0 }}</span>
                             </td>
                             <td>
                                 <div class="row-actions">
-                                    <button class="row-action edit" [routerLink]="['/customers/edit', customer.idCustomer]" title="Edit">
+                                    <button class="row-action edit" [routerLink]="['/delivery/customers', customer.id, 'edit']" title="Edit">
                                         <i class="pi pi-pencil"></i>
                                     </button>
                                     <button class="row-action delete" (click)="confirmDelete(customer)" title="Delete">
@@ -153,48 +152,66 @@ import { Customer } from '../../../../shared/models/models';
     styles: [`:host { display: block; }`]
 })
 export class CustomerListComponent implements OnInit {
-    customers: Customer[] = [];
+    customers$: Observable<Customer[]>;
+    loading$: Observable<boolean>;
+    pagination$: Observable<any>;
 
     constructor(
-        private customerService: CustomerService,
+        private store: Store,
         private confirmationService: ConfirmationService,
         private messageService: MessageService
-    ) { }
+    ) {
+        this.customers$ = this.store.select(CustomerSelectors.selectCustomers);
+        this.loading$ = this.store.select(CustomerSelectors.selectLoadingList);
+        this.pagination$ = this.store.select(CustomerSelectors.selectPaginationInfo);
+    }
 
     ngOnInit(): void {
-        this.loadCustomers();
+        // Initial load is triggered by p-table lazy load or we can trigger default here.
+        // p-table lazy triggers onInit usually.
     }
 
-    loadCustomers(): void {
-        this.customerService.getAllCustomers().subscribe({
-            next: (data) => this.customers = data,
-            error: (err) => console.error('Error loading customers:', err)
-        });
+    loadCustomers(event: TableLazyLoadEvent): void {
+        const page = (event.first || 0) / (event.rows || 10);
+        const size = event.rows || 10;
+        let sort = 'name,asc';
+        if (event.sortField) {
+            sort = `${event.sortField},${event.sortOrder === 1 ? 'asc' : 'desc'}`;
+        }
+
+        this.store.dispatch(CustomerActions.setSearchParams({
+            params: { page, size, sort }
+        }));
     }
 
-    getUniqueCities(): number {
-        const cities = new Set(this.customers.map(c => c.city).filter(c => c));
-        return cities.size;
+    onSearch(event: any): void {
+        const value = event.target.value;
+        this.store.dispatch(CustomerActions.setSearchParams({
+            params: { search: value, page: 0 }
+        }));
     }
 
     confirmDelete(customer: Customer): void {
+        if (customer.hasActiveOrders) {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Cannot Delete',
+                detail: `Alert: Client has ${customer.ordersCount} active order(s). Deletion is impossible.`
+            });
+            return;
+        }
+
         this.confirmationService.confirm({
             message: `Are you sure you want to delete "${customer.name}"?`,
             header: 'Confirm Delete',
             icon: 'pi pi-exclamation-triangle',
             accept: () => {
-                this.customerService.deleteCustomer(customer.idCustomer!).subscribe({
-                    next: () => {
-                        this.messageService.add({ severity: 'success', summary: 'Deleted', detail: 'Customer deleted successfully' });
-                        this.loadCustomers();
-                    },
-                    error: (err) => {
-                        let msg = 'Failed to delete customer';
-                        if (err.status === 409) msg = 'Cannot delete - customer has active orders';
-                        this.messageService.add({ severity: 'error', summary: 'Error', detail: msg });
-                    }
-                });
+                this.store.dispatch(CustomerActions.deleteCustomer({ id: customer.id }));
             }
         });
+    }
+
+    reload() {
+        this.store.dispatch(CustomerActions.loadCustomers());
     }
 }

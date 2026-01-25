@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -7,8 +7,13 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
-import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../../../shared/models/models';
+import { Store } from '@ngrx/store';
+import { Observable, Subscription, combineLatest } from 'rxjs';
+import { map, filter, tap } from 'rxjs/operators';
+
+import { Customer } from '../models/customer.model';
+import * as CustomerActions from '../store/customer.actions';
+import * as CustomerSelectors from '../store/customer.selectors';
 
 @Component({
     selector: 'app-customer-form',
@@ -52,7 +57,7 @@ import { Customer } from '../../../../shared/models/models';
                                     <label for="name">Customer Name <span class="required">*</span></label>
                                     <input pInputText id="name" formControlName="name" placeholder="Enter customer name">
                                     <span class="form-error" *ngIf="customerForm.get('name')?.invalid && customerForm.get('name')?.touched">
-                                        Name is required
+                                        Name is required (3-100 characters)
                                     </span>
                                 </div>
                             </div>
@@ -69,14 +74,14 @@ import { Customer } from '../../../../shared/models/models';
                                     <label for="address">Address <span class="required">*</span></label>
                                     <input pInputText id="address" formControlName="address" placeholder="Street address">
                                     <span class="form-error" *ngIf="customerForm.get('address')?.invalid && customerForm.get('address')?.touched">
-                                        Address is required
+                                        Address is required (10-255 characters)
                                     </span>
                                 </div>
                                 <div class="form-field">
                                     <label for="city">City <span class="required">*</span></label>
                                     <input pInputText id="city" formControlName="city" placeholder="City name">
                                     <span class="form-error" *ngIf="customerForm.get('city')?.invalid && customerForm.get('city')?.touched">
-                                        City is required
+                                        City is required (2-50 characters)
                                     </span>
                                 </div>
                             </div>
@@ -86,12 +91,12 @@ import { Customer } from '../../../../shared/models/models';
 
                     <!-- Form Actions -->
                     <div class="form-actions">
-                        <button type="button" class="btn-cancel" routerLink="/customers">
+                        <button type="button" class="btn-cancel" routerLink="/delivery/customers">
                             <i class="pi pi-times"></i>
                             Cancel
                         </button>
-                        <button type="submit" class="btn-save" [disabled]="customerForm.invalid">
-                            <i class="pi pi-check"></i>
+                        <button type="submit" class="btn-save" [disabled]="customerForm.invalid || (isLoading$ | async)">
+                            <i class="pi" [ngClass]="{'pi-check': !(isLoading$ | async), 'pi-spin pi-spinner': (isLoading$ | async)}"></i>
                             {{ isEditMode ? 'Update Customer' : 'Add Customer' }}
                         </button>
                     </div>
@@ -102,57 +107,73 @@ import { Customer } from '../../../../shared/models/models';
     `,
     styles: [`:host { display: block; }`]
 })
-export class CustomerFormComponent implements OnInit {
+export class CustomerFormComponent implements OnInit, OnDestroy {
     customerForm!: FormGroup;
     isEditMode = false;
     customerId?: number;
+    isLoading$: Observable<boolean>;
+
+    private subscription: Subscription = new Subscription();
 
     constructor(
         private fb: FormBuilder,
-        private customerService: CustomerService,
-        private router: Router,
+        private store: Store,
         private route: ActivatedRoute,
-        private messageService: MessageService
-    ) { }
+    ) {
+        this.isLoading$ = this.store.select(CustomerSelectors.selectIsLoading);
+    }
 
     ngOnInit(): void {
         this.customerForm = this.fb.group({
-            name: ['', Validators.required],
-            address: ['', Validators.required],
-            city: ['', Validators.required]
+            name: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+            address: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(255)]],
+            city: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]]
         });
 
         this.route.params.subscribe(params => {
             if (params['id']) {
                 this.isEditMode = true;
                 this.customerId = +params['id'];
-                this.loadCustomer();
+                this.store.dispatch(CustomerActions.loadCustomerById({ id: this.customerId }));
+
+                // Subscribe to selected customer to patch form
+                this.subscription.add(
+                    this.store.select(CustomerSelectors.selectSelectedCustomer)
+                        .pipe(filter(c => !!c && c.id === this.customerId))
+                        .subscribe(customer => {
+                            if (customer) {
+                                this.customerForm.patchValue(customer);
+                            }
+                        })
+                );
+            } else {
+                this.store.dispatch(CustomerActions.clearSelectedCustomer());
             }
         });
     }
 
-    loadCustomer(): void {
-        this.customerService.getCustomerById(this.customerId!).subscribe({
-            next: (customer) => this.customerForm.patchValue(customer),
-            error: () => this.router.navigate(['/customers'])
-        });
+    ngOnDestroy(): void {
+        this.subscription.unsubscribe();
+        this.store.dispatch(CustomerActions.clearSelectedCustomer());
     }
 
     onSubmit(): void {
-        if (this.customerForm.invalid) return;
+        if (this.customerForm.invalid) {
+            this.customerForm.markAllAsTouched();
+            return;
+        }
 
-        const customer: Customer = this.customerForm.value;
+        const customerData = this.customerForm.value;
 
-        const operation = this.isEditMode
-            ? this.customerService.updateCustomer(this.customerId!, customer)
-            : this.customerService.createCustomer(customer);
-
-        operation.subscribe({
-            next: () => {
-                this.messageService.add({ severity: 'success', summary: 'Success', detail: `Customer ${this.isEditMode ? 'updated' : 'created'} successfully` });
-                setTimeout(() => this.router.navigate(['/customers']), 1000);
-            },
-            error: () => this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Failed to save customer' })
-        });
+        if (this.isEditMode && this.customerId) {
+            this.store.dispatch(CustomerActions.updateCustomer({
+                id: this.customerId,
+                customer: customerData
+            }));
+        } else {
+            this.store.dispatch(CustomerActions.createCustomer({
+                customer: customerData
+            }));
+        }
     }
 }

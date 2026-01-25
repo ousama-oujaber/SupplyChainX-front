@@ -1,13 +1,18 @@
-import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, APP_INITIALIZER, isDevMode } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { KeycloakService } from 'keycloak-angular';
+import { provideStore, provideState } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 
 import { routes } from './app.routes';
 import { authInterceptor } from './core/auth/auth.interceptor';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { environment } from '../environments/environment';
+import { CustomerEffects } from './features/delivery/customers/store/customer.effects';
+import { customerFeatureKey, customerReducer } from './features/delivery/customers/store/customer.reducer';
 
 function initializeKeycloak(keycloak: KeycloakService) {
   return () =>
@@ -46,7 +51,11 @@ export const appConfig: ApplicationConfig = {
       deps: [KeycloakService]
     },
     MessageService,
-    ConfirmationService
+    ConfirmationService,
+    provideStore(),
+    provideEffects(CustomerEffects),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+    provideState(customerFeatureKey, customerReducer)
   ]
 };
 

@@ -148,6 +148,11 @@ export const routes: Routes = [
         canActivate: [deliveryGuard]
     },
     {
+        path: 'customers/:id',
+        loadComponent: () => import('./features/delivery/customers/customer-detail/customer-detail.component').then(m => m.CustomerDetailComponent),
+        canActivate: [deliveryGuard]
+    },
+    {
         path: 'customers/edit/:id',
         loadComponent: () => import('./features/delivery/customers/customer-form/customer-form.component').then(m => m.CustomerFormComponent),
         canActivate: [deliveryGuard]
