@@ -53,9 +53,9 @@ export const appConfig: ApplicationConfig = {
     MessageService,
     ConfirmationService,
     provideStore(),
+    provideState(customerFeatureKey, customerReducer),
     provideEffects(CustomerEffects),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
-    provideState(customerFeatureKey, customerReducer)
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
   ]
 };
 

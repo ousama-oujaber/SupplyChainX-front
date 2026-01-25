@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, exhaustMap, tap, withLatestFrom, debounceTime, switchMap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
@@ -12,14 +12,11 @@ import { selectSearchParams } from './customer.selectors';
 
 @Injectable()
 export class CustomerEffects {
-
-    constructor(
-        private actions$: Actions,
-        private customerService: CustomerService,
-        private messageService: MessageService,
-        private router: Router,
-        private store: Store
-    ) { }
+    private actions$ = inject(Actions);
+    private customerService = inject(CustomerService);
+    private messageService = inject(MessageService);
+    private router = inject(Router);
+    private store = inject(Store);
 
     // Trigger load when params change (with debounce for search/params)
     triggerLoadCustomers$ = createEffect(() => {
