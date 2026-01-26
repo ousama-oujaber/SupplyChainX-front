@@ -4,6 +4,6 @@ export const environment = {
     keycloak: {
         url: 'https://auth.supplychainx.com',
         realm: 'supplychainx',
-        clientId: 'supplychainx-api'
+        clientId: 'supplychainx-frontend'
     }
 };
